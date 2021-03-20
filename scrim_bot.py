@@ -1,5 +1,11 @@
+## ScrimBot
+# Made for the DeathSquad Discord Server by CapdinCrando
+# Has many useful features, such as team selection and name changing
+# Licensed under the GNU General Public License v3.0
+
+## Imports
 import discord
-from constants import bigunnn_id, bot_id
+from constants import bigunnn_id, bot_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint
@@ -8,10 +14,15 @@ from math import ceil
 from os import urandom
 from base64 import b64encode
 
+## Bot Setup
 bot = commands.Bot(command_prefix='!')
 
-team2members = []
+team2members = []	# Initalize team members array
 
+## !scrim command
+# When called, the bot will take a list of all users in the voice channel of the author
+# It will take this list and randomly assign them to two teams, and save and print the teams
+# Warning: Currently each bot instance only works with one Discord server!
 @bot.command()
 async def scrim(ctx):
 	channel = ctx.author.voice.channel
@@ -46,6 +57,9 @@ async def scrim(ctx):
 
 		await ctx.send(team1 + team2)
 
+## !move command
+# When called, the move command will take the last saved team configuration,
+# and move team 2 to a different channel
 @bot.command()
 async def move(ctx):
 	channel = ctx.author.voice.channel
@@ -57,6 +71,9 @@ async def move(ctx):
 			except HTTPException:
 				await ctx.send('ERROR: Cannot move ' + member.nick)
 
+## !back command
+# When called, the move command will take the last saved team configuration,
+# and move team 2 back to the original channel
 @bot.command()
 async def back(ctx):
 	channel = ctx.author.voice.channel
@@ -68,6 +85,9 @@ async def back(ctx):
 			except HTTPException:
 				await ctx.send('ERROR: Cannot move ' + member.nick)
 
+## !quote command
+# The quote command will find a channel called quotes,
+# pull a random message, and send it to the channel
 @bot.command()
 async def quote(ctx):
 	for channel in ctx.guild.text_channels:
@@ -79,14 +99,20 @@ async def quote(ctx):
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
 
+## !sugg command
+# Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
 @bot.command()
 async def sugg(ctx):
 	await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
+## !QjmschLizoardQjmschWizoard command
+# Changes a specific user's to a random string of characters
+# Fun fact: the random string is cryptographically strong, too!
 @bot.command()
 async def QjmschLizoardQjmschWizoard(ctx):
 	big = ctx.guild.get_member(bigunnn_id)
 	name = b64encode(urandom(24)).decode('utf-8')
 	await big.edit(nick=name)
 
+## Turn on the bot
 bot.run(bot_id)

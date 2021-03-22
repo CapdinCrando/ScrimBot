@@ -99,6 +99,20 @@ async def quote(ctx):
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
 
+## !quotetts command
+# The quote command will find a channel called quotes,
+# pull a random message, and send it to the channel with tts
+@bot.command()
+async def quotetts(ctx):
+	for channel in ctx.guild.text_channels:
+		if(channel.name == "quotes"):
+			quotes = []
+			quoteCount = 0
+			async for quote in channel.history(limit=None):
+				quotes.append(quote.content)
+				quoteCount += 1
+			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
+
 ## !sugg command
 # Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
 @bot.command()

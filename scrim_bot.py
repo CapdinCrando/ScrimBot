@@ -8,14 +8,16 @@ import discord
 from constants import bigunnn_id, bot_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
-from random import randint
-from random import shuffle
+from random import randint, shuffle, choice
 from math import ceil
 from os import urandom
 from base64 import b64encode
 
+intents = discord.Intents.default()
+intents.members = True
+
 ## Bot Setup
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', intents = intents)
 
 team2members = []	# Initalize team members array
 
@@ -99,6 +101,20 @@ async def quote(ctx):
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
 
+## !quotetts command
+# The quote command will find a channel called quotes,
+# pull a random message, and send it to the channel with tts
+@bot.command()
+async def quotetts(ctx):
+	for channel in ctx.guild.text_channels:
+		if(channel.name == "quotes"):
+			quotes = []
+			quoteCount = 0
+			async for quote in channel.history(limit=None):
+				quotes.append(quote.content)
+				quoteCount += 1
+			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
+
 ## !sugg command
 # Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
 @bot.command()
@@ -109,6 +125,14 @@ async def sugg(ctx):
 # 
 @bot.command()
 async def killmenow(ctx):
+	print("")
+
+## !fugg command
+# Insults a random server member
+@bot.command()
+async def fugg(ctx):
+	fugg_member = choice(ctx.guild.members)
+	await ctx.send(f'Fugg you, <@{fugg_member.id}>')
 
 ## !QjmschLizoardQjmschWizoard command
 # Changes a specific user's to a random string of characters

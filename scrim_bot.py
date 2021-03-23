@@ -105,6 +105,11 @@ async def quote(ctx):
 async def sugg(ctx):
 	await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
+## !killmenow command
+# 
+@bot.command()
+async def killmenow(ctx):
+
 ## !QjmschLizoardQjmschWizoard command
 # Changes a specific user's to a random string of characters
 # Fun fact: the random string is cryptographically strong, too!

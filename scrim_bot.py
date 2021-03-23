@@ -8,14 +8,16 @@ import discord
 from constants import bigunnn_id, bot_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
-from random import randint
-from random import shuffle
+from random import randint, shuffle, choice
 from math import ceil
 from os import urandom
 from base64 import b64encode
 
+intents = discord.Intents.default()
+intents.members = True
+
 ## Bot Setup
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', intents = intents)
 
 team2members = []	# Initalize team members array
 
@@ -118,6 +120,13 @@ async def quotetts(ctx):
 @bot.command()
 async def sugg(ctx):
 	await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
+
+## !fugg command
+# Insults a random server member
+@bot.command()
+async def fugg(ctx):
+	fugg_member = choice(ctx.guild.members)
+	await ctx.send(f'Fugg you, <@{fugg_member.id}>')
 
 ## !QjmschLizoardQjmschWizoard command
 # Changes a specific user's to a random string of characters

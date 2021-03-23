@@ -121,6 +121,25 @@ async def quotetts(ctx):
 async def sugg(ctx):
 	await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
+## !killmenow command
+# Chooses a random member in the author's text channel
+# That member is sent a message telling them to "assasinate" the message author
+# Disclaimer: 	The message specifies for this to be done in a video game,
+# 				as we do not condone murder or contract killing
+@bot.command()
+async def killmenow(ctx):
+	target = ctx.author
+	voice = target.voice
+	if(voice != None):
+		member_list = list(voice.channel.members)
+		member_list.remove(target)
+		if(len(member_list) > 0):
+			hitman = choice(member_list)
+			await hitman.send(f"{ target.name } has requested to be assassinated.\n"
+								"You have been assigned to this task.\n"
+								"In the next video game you play, take them out whenever they least expect it.\n"
+								"Good luck, and don't get caught.")
+
 ## !fugg command
 # Insults a random server member
 @bot.command()

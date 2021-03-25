@@ -6,7 +6,7 @@ Doc
 Rook
 Kapkan
 Tachanka
-Jäger
+Jager
 Bandit
 Frost
 Valkyrie

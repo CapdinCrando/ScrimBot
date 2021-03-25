@@ -10,7 +10,7 @@ Blitz
 IQ
 Buck
 Blackbeard
-Capitão
+Capitao
 Hibana
 Jackal
 Ying
@@ -21,7 +21,7 @@ Finka
 Maverick
 Nomad
 Gridlock
-Nøkk
+Nokk
 Amaru
 Kali
 Iana

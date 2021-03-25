@@ -21,6 +21,22 @@ bot = commands.Bot(command_prefix='!', intents = intents)
 
 team2members = []	# Initalize team members array
 
+attackersFile = open("attackers.txt","r")   # Initialize attackers and defenders input files
+defendersFile = open("defenders.txt","r")
+
+attackers = []   # Initialize attackers and defenders arrays
+defenders = []
+
+attackerCount = 0
+defenderCount = 0
+for attacker in attackersFile:  # Fill attackers and defenders arrays with operators from input files
+	attackers.append(attacker)
+	attackerCount += 1
+
+for defender in defendersFile:
+	defenders.append(defender)
+	defenderCount += 1
+
 ## !scrim command
 # When called, the bot will take a list of all users in the voice channel of the author
 # It will take this list and randomly assign them to two teams, and save and print the teams
@@ -155,6 +171,32 @@ async def QjmschLizoardQjmschWizoard(ctx):
 	big = ctx.guild.get_member(bigunnn_id)
 	name = b64encode(urandom(24)).decode('utf-8')
 	await big.edit(nick=name)
+
+## !RandomAttackers command
+# Generates 5 random attackers from Siege
+@bot.command()
+async def RandomAttackers(ctx):
+	usedOps = []   # Array to keep track of operators already used
+	for i in range(5):
+		operatorIdx = randint(0,attackerCount-1)   # Get random operator index (priming read)
+		while(operatorIdx in usedOps):   # Has this operator been used already?
+			operatorIdx = randint(0,attackerCount-1)   # If yes, get new random operator index
+		usedOps.append(operatorIdx)   # Add operator to list of used operators
+		attackerName = attackers[operatorIdx]   # Get name of the operator
+		await ctx.send(attackerName)
+
+## !RandomDefenders
+# Generates 5 random defenders from Siege
+@bot.command()
+async def RandomDefenders(ctx):
+	usedOps = []   # Array to keep track of operators already used
+	for i in range(5):
+		operatorIdx = randint(0,defenderCount-1)   # Get random operator index (priming read)
+		while(operatorIdx in usedOps):   # Has this operator been used already?
+			operatorIdx = randint(0,defenderCount-1)   # If yes, get new random operator index
+		usedOps.append(operatorIdx)   # Add operator to list of used operators
+		defenderName = defenders[operatorIdx]   # Get name of the operator
+		await ctx.send(defenderName)
 
 ## Turn on the bot
 bot.run(bot_id)

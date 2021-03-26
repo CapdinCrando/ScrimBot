@@ -4,6 +4,7 @@
 # Licensed under the GNU General Public License v3.0
 
 ## Imports
+import csv
 import discord
 from constants import bigunnn_id, bot_id	## Used for privacy reasons
 from discord.ext import commands
@@ -36,6 +37,19 @@ for attacker in attackersFile:  # Fill attackers and defenders arrays with opera
 for defender in defendersFile:
 	defenders.append(defender)
 	defenderCount += 1
+
+# Initialize attack and defense strategy lists
+strat_list_attack = []
+with open("strats_attack.txt") as strat_attack_file:
+	strat_reader = csv.reader(strat_attack_file, delimiter="\t")
+	for row in strat_reader:
+		strat_list_attack.append(row)
+
+strat_list_defense = []
+with open("strats_defense.txt") as strat_defend_file:
+	strat_reader = csv.reader(strat_defend_file, delimiter="\t")
+	for row in strat_reader:
+		strat_list_defense.append(row)
 
 ## !scrim command
 # When called, the bot will take a list of all users in the voice channel of the author
@@ -197,6 +211,26 @@ async def RandomDefenders(ctx):
 		usedOps.append(operatorIdx)   # Add operator to list of used operators
 		defenderName = defenders[operatorIdx]   # Get name of the operator
 		await ctx.send(defenderName)
+
+## !stratattack command
+# Picks a random strategy from a list of attack strats and displays it
+@bot.command()
+async def stratattack(ctx):
+	strat = choice(strat_list_attack)
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
+	for op in strat[3].split(","):
+		strat_string += f"\n\t- { op }"
+	await ctx.send(strat_string)
+
+## !stratdefend command
+# Picks a random strategy from a list of defense strats and displays it
+@bot.command()
+async def stratdefend(ctx):
+	strat = choice(strat_list_defense)
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
+	for op in strat[3].split(","):
+		strat_string += f"\n\t- { op }"
+	await ctx.send(strat_string)
 
 ## Turn on the bot
 bot.run(bot_id)

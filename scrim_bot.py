@@ -217,9 +217,11 @@ async def RandomDefenders(ctx):
 @bot.command()
 async def stratattack(ctx):
 	strat = choice(strat_list_attack)
-	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
-	for op in strat[3].split(","):
-		strat_string += f"\n\t- { op }"
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }:"
+	if len(strat) == 4:
+		strat_string += ":"
+		for op in strat[3].split(","):
+			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
 
 ## !stratdefend command
@@ -228,8 +230,10 @@ async def stratattack(ctx):
 async def stratdefend(ctx):
 	strat = choice(strat_list_defense)
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
-	for op in strat[3].split(","):
-		strat_string += f"\n\t- { op }"
+	if len(strat) == 4:
+		strat_string += ":"
+		for op in strat[3].split(","):
+			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
 
 ## Turn on the bot

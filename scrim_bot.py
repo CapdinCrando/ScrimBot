@@ -229,7 +229,7 @@ async def stratattack(ctx):
 @bot.command()
 async def stratdefend(ctx):
 	strat = choice(strat_list_defense)
-	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- *\"{ strat[1] }\"*\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):

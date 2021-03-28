@@ -51,12 +51,14 @@ with open("strats_defense.txt") as strat_defend_file:
 	for row in strat_reader:
 		strat_list_defense.append(row)
 
-## !scrim command
-# When called, the bot will take a list of all users in the voice channel of the author
-# It will take this list and randomly assign them to two teams, and save and print the teams
-# Warning: Currently each bot instance only works with one Discord server!
 @bot.command()
 async def scrim(ctx):
+	"""!scrim command
+
+	When called, the bot will take a list of all users in the voice channel of the author
+	It will take this list and randomly assign them to two teams, and save and print the teams
+	Warning: Currently each bot instance only works with one Discord server!	
+	"""
 	channel = ctx.author.voice.channel
 	if(channel != None):
 		team2members.clear()
@@ -89,11 +91,13 @@ async def scrim(ctx):
 
 		await ctx.send(team1 + team2)
 
-## !move command
-# When called, the move command will take the last saved team configuration,
-# and move team 2 to a different channel
 @bot.command()
 async def move(ctx):
+	"""!move command
+
+	When called, the move command will take the last saved team configuration,
+	and move team 2 to a different channel
+	"""
 	channel = ctx.author.voice.channel
 	if(channel != None):
 		newChannel = ctx.guild.voice_channels[1]
@@ -103,11 +107,13 @@ async def move(ctx):
 			except HTTPException:
 				await ctx.send('ERROR: Cannot move ' + member.nick)
 
-## !back command
-# When called, the move command will take the last saved team configuration,
-# and move team 2 back to the original channel
 @bot.command()
 async def back(ctx):
+	"""!back command
+
+	When called, the move command will take the last saved team configuration,
+	and move team 2 back to the original channel
+	"""
 	channel = ctx.author.voice.channel
 	if(channel != None):
 		newChannel = ctx.guild.voice_channels[0]
@@ -117,11 +123,13 @@ async def back(ctx):
 			except HTTPException:
 				await ctx.send('ERROR: Cannot move ' + member.nick)
 
-## !quote command
-# The quote command will find a channel called quotes,
-# pull a random message, and send it to the channel
 @bot.command()
 async def quote(ctx):
+	"""!quote command
+
+	The quote command will find a channel called quotes,
+	pull a random message, and send it to the channel
+	"""
 	for channel in ctx.guild.text_channels:
 		if(channel.name == "quotes"):
 			quotes = []
@@ -131,11 +139,13 @@ async def quote(ctx):
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
 
-## !quotetts command
-# The quote command will find a channel called quotes,
-# pull a random message, and send it to the channel with tts
 @bot.command()
 async def quotetts(ctx):
+	"""!quotetts command
+
+	The quote command will find a channel called quotes,
+	pull a random message, and send it to the channel with tts
+	"""
 	for channel in ctx.guild.text_channels:
 		if(channel.name == "quotes"):
 			quotes = []
@@ -145,19 +155,22 @@ async def quotetts(ctx):
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
 
-## !sugg command
-# Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
 @bot.command()
 async def sugg(ctx):
+	"""!sugg command
+
+	Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
+	"""
 	await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
-## !killmenow command
-# Chooses a random member in the author's text channel
-# That member is sent a message telling them to "assasinate" the message author
-# Disclaimer: 	The message specifies for this to be done in a video game,
-# 				as we do not condone murder or contract killing
 @bot.command()
 async def killmenow(ctx):
+	"""!killmenow command
+	Chooses a random member in the author's text channel
+	That member is sent a message telling them to "assasinate" the message author
+	Disclaimer: 	The message specifies for this to be done in a video game,
+					as we do not condone murder or contract killing
+	"""
 	target = ctx.author
 	voice = target.voice
 	if(voice != None):
@@ -170,26 +183,32 @@ async def killmenow(ctx):
 								"In the next video game you play, take them out whenever they least expect it.\n"
 								"Good luck, and don't get caught.")
 
-## !fugg command
-# Insults a random server member
 @bot.command()
 async def fugg(ctx):
+	"""!fugg command
+
+	Insults a random server member
+	"""
 	fugg_member = choice(ctx.guild.members)
 	await ctx.send(f'Fugg you, <@{fugg_member.id}>')
 
-## !QjmschLizoardQjmschWizoard command
-# Changes a specific user's to a random string of characters
-# Fun fact: the random string is cryptographically strong, too!
 @bot.command()
 async def QjmschLizoardQjmschWizoard(ctx):
+	"""!QjmschLizoardQjmschWizoard command
+
+	Changes a specific user's to a random string of characters
+	Fun fact: the random string is cryptographically strong, too!
+	"""
 	big = ctx.guild.get_member(bigunnn_id)
 	name = b64encode(urandom(24)).decode('utf-8')
 	await big.edit(nick=name)
 
-## !RandomAttackers command
-# Generates 5 random attackers from Siege
 @bot.command()
 async def RandomAttackers(ctx):
+	"""!RandomAttackers command
+	
+	Generates 5 random attackers from Siege
+	"""
 	usedOps = []   # Array to keep track of operators already used
 	for i in range(5):
 		operatorIdx = randint(0,attackerCount-1)   # Get random operator index (priming read)
@@ -199,10 +218,12 @@ async def RandomAttackers(ctx):
 		attackerName = attackers[operatorIdx]   # Get name of the operator
 		await ctx.send(attackerName)
 
-## !RandomDefenders
-# Generates 5 random defenders from Siege
 @bot.command()
 async def RandomDefenders(ctx):
+	"""!RandomDefenders command
+
+	Generates 5 random defenders from Siege
+	"""
 	usedOps = []   # Array to keep track of operators already used
 	for i in range(5):
 		operatorIdx = randint(0,defenderCount-1)   # Get random operator index (priming read)
@@ -212,10 +233,12 @@ async def RandomDefenders(ctx):
 		defenderName = defenders[operatorIdx]   # Get name of the operator
 		await ctx.send(defenderName)
 
-## !stratattack command
-# Picks a random strategy from a list of attack strats and displays it
 @bot.command()
 async def stratattack(ctx):
+	"""!stratattack command
+
+	Picks a random strategy from a list of attack strats and displays it
+	"""
 	strat = choice(strat_list_attack)
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }:"
 	if len(strat) == 4:
@@ -224,10 +247,12 @@ async def stratattack(ctx):
 			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
 
-## !stratdefend command
-# Picks a random strategy from a list of defense strats and displays it
 @bot.command()
 async def stratdefend(ctx):
+	"""!stratdefend command
+
+	Picks a random strategy from a list of defense strats and displays it
+	"""
 	strat = choice(strat_list_defense)
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- *\"{ strat[1] }\"*\n- { strat[2] }"
 	if len(strat) == 4:

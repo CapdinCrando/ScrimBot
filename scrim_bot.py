@@ -210,13 +210,15 @@ async def RandomAttackers(ctx):
 	Generates 5 random attackers from Siege
 	"""
 	usedOps = []   # Array to keep track of operators already used
+	msg = "Generated 5 Random Attackers:\n\n"
 	for i in range(5):
 		operatorIdx = randint(0,attackerCount-1)   # Get random operator index (priming read)
 		while(operatorIdx in usedOps):   # Has this operator been used already?
 			operatorIdx = randint(0,attackerCount-1)   # If yes, get new random operator index
 		usedOps.append(operatorIdx)   # Add operator to list of used operators
 		attackerName = attackers[operatorIdx]   # Get name of the operator
-		await ctx.send(attackerName)
+		msg += "\t- " + attackerName
+	await ctx.send(msg)
 
 @bot.command()
 async def RandomDefenders(ctx):
@@ -225,13 +227,15 @@ async def RandomDefenders(ctx):
 	Generates 5 random defenders from Siege
 	"""
 	usedOps = []   # Array to keep track of operators already used
+	msg = "Generated 5 Random Defenders:\n\n"
 	for i in range(5):
 		operatorIdx = randint(0,defenderCount-1)   # Get random operator index (priming read)
 		while(operatorIdx in usedOps):   # Has this operator been used already?
 			operatorIdx = randint(0,defenderCount-1)   # If yes, get new random operator index
 		usedOps.append(operatorIdx)   # Add operator to list of used operators
 		defenderName = defenders[operatorIdx]   # Get name of the operator
-		await ctx.send(defenderName)
+		msg += "\t- " + defenderName
+	await ctx.send(msg)
 
 @bot.command()
 async def stratattack(ctx):

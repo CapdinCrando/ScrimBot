@@ -128,22 +128,6 @@ async def quote(ctx):
 	"""!quote command
 
 	The quote command will find a channel called quotes,
-	pull a random message, and send it to the channel
-	"""
-	for channel in ctx.guild.text_channels:
-		if(channel.name == "quotes"):
-			quotes = []
-			quoteCount = 0
-			async for quote in channel.history(limit=None):
-				quotes.append(quote.content)
-				quoteCount += 1
-			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
-
-@bot.command()
-async def quotetts(ctx):
-	"""!quotetts command
-
-	The quote command will find a channel called quotes,
 	pull a random message, and send it to the channel with tts
 	"""
 	for channel in ctx.guild.text_channels:

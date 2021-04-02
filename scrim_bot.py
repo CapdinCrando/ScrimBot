@@ -244,7 +244,7 @@ async def stratattack(ctx):
 	Picks a random strategy from a list of attack strats and displays it
 	"""
 	strat = choice(strat_list_attack)
-	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }:"
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):

@@ -6,7 +6,7 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint, shuffle, choice, randrange 
@@ -266,9 +266,9 @@ async def stratdefend(ctx):
    "pog" emoji """
 @bot.command()
 async def poggers(ctx):
-        PogAmount = randint(8,15)
-        for i in range(PogAmount):
-                await ctx.send(f':PogChamp: ' * randint(1, 10))
+	PogAmount = randint(8,15)
+	for i in range(PogAmount):
+		await ctx.send(pog_id * randint(1, 10))
 
 ## Turn on the bot
 bot.run(bot_id)

@@ -6,10 +6,10 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
-from random import randint, shuffle, choice
+from random import randint, shuffle, choice, randrange 
 from math import ceil
 from os import urandom
 from base64 import b64encode
@@ -128,22 +128,6 @@ async def quote(ctx):
 	"""!quote command
 
 	The quote command will find a channel called quotes,
-	pull a random message, and send it to the channel
-	"""
-	for channel in ctx.guild.text_channels:
-		if(channel.name == "quotes"):
-			quotes = []
-			quoteCount = 0
-			async for quote in channel.history(limit=None):
-				quotes.append(quote.content)
-				quoteCount += 1
-			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
-
-@bot.command()
-async def quotetts(ctx):
-	"""!quotetts command
-
-	The quote command will find a channel called quotes,
 	pull a random message, and send it to the channel with tts
 	"""
 	for channel in ctx.guild.text_channels:
@@ -210,13 +194,15 @@ async def RandomAttackers(ctx):
 	Generates 5 random attackers from Siege
 	"""
 	usedOps = []   # Array to keep track of operators already used
+	msg = "Generated 5 Random Attackers:\n\n"
 	for i in range(5):
 		operatorIdx = randint(0,attackerCount-1)   # Get random operator index (priming read)
 		while(operatorIdx in usedOps):   # Has this operator been used already?
 			operatorIdx = randint(0,attackerCount-1)   # If yes, get new random operator index
 		usedOps.append(operatorIdx)   # Add operator to list of used operators
 		attackerName = attackers[operatorIdx]   # Get name of the operator
-		await ctx.send(attackerName)
+		msg += "\t- " + attackerName
+	await ctx.send(msg)
 
 @bot.command()
 async def RandomDefenders(ctx):
@@ -225,13 +211,15 @@ async def RandomDefenders(ctx):
 	Generates 5 random defenders from Siege
 	"""
 	usedOps = []   # Array to keep track of operators already used
+	msg = "Generated 5 Random Defenders:\n\n"
 	for i in range(5):
 		operatorIdx = randint(0,defenderCount-1)   # Get random operator index (priming read)
 		while(operatorIdx in usedOps):   # Has this operator been used already?
 			operatorIdx = randint(0,defenderCount-1)   # If yes, get new random operator index
 		usedOps.append(operatorIdx)   # Add operator to list of used operators
 		defenderName = defenders[operatorIdx]   # Get name of the operator
-		await ctx.send(defenderName)
+		msg += "\t- " + defenderName
+	await ctx.send(msg)
 
 @bot.command()
 async def stratattack(ctx):
@@ -240,7 +228,7 @@ async def stratattack(ctx):
 	Picks a random strategy from a list of attack strats and displays it
 	"""
 	strat = choice(strat_list_attack)
-	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }:"
+	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):
@@ -260,6 +248,15 @@ async def stratdefend(ctx):
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
+
+"""!poggers Command
+   incredibly advanced ai mimics a large crowd of users spamming the 
+   "pog" emoji """
+@bot.command()
+async def poggers(ctx):
+	PogAmount = randint(8,15)
+	for i in range(PogAmount):
+		await ctx.send(pog_id * randint(1, 10))
 
 ## Turn on the bot
 bot.run(bot_id)

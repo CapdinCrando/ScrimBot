@@ -6,10 +6,10 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
-from random import randint, shuffle, choice
+from random import randint, shuffle, choice, randrange 
 from math import ceil
 from os import urandom
 from base64 import b64encode
@@ -248,6 +248,15 @@ async def stratdefend(ctx):
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
+
+"""!poggers Command
+   incredibly advanced ai mimics a large crowd of users spamming the 
+   "pog" emoji """
+@bot.command()
+async def poggers(ctx):
+	PogAmount = randint(8,15)
+	for i in range(PogAmount):
+		await ctx.send(pog_id * randint(1, 10))
 
 ## Turn on the bot
 bot.run(bot_id)

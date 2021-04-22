@@ -22,6 +22,9 @@ bot = commands.Bot(command_prefix='!', intents = intents)
 
 team2members = []	# Initalize team members array
 
+previousAttackerStrat = []
+previousDefenderStrat = []
+
 attackersFile = open("attackers.txt","r")   # Initialize attackers and defenders input files
 defendersFile = open("defenders.txt","r")
 
@@ -44,12 +47,14 @@ with open("strats_attack.txt") as strat_attack_file:
 	strat_reader = csv.reader(strat_attack_file, delimiter="\t")
 	for row in strat_reader:
 		strat_list_attack.append(row)
+previousAttackerStrat = strat_list_attack.pop()
 
 strat_list_defense = []
 with open("strats_defense.txt") as strat_defend_file:
 	strat_reader = csv.reader(strat_defend_file, delimiter="\t")
 	for row in strat_reader:
 		strat_list_defense.append(row)
+previousDefenderStrat = strat_list_defense.pop()
 
 @bot.command()
 async def scrim(ctx):
@@ -227,12 +232,19 @@ async def stratattack(ctx):
 
 	Picks a random strategy from a list of attack strats and displays it
 	"""
-	strat = choice(strat_list_attack)
+	# Strat selection
+	strat = shuffle(strat_list_attack).pop()			# Get random strat and remove from list
+	strat_list_attack.append(previousAttackerStrat)		# Add old strat back to list
+	previousAttackerStrat = strat						# Save current strat
+
+	# Build strat string
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
+	
+	# Send strat
 	await ctx.send(strat_string)
 
 @bot.command()
@@ -241,12 +253,19 @@ async def stratdefend(ctx):
 
 	Picks a random strategy from a list of defense strats and displays it
 	"""
-	strat = choice(strat_list_defense)
+	# Strat selection
+	strat = shuffle(strat_list_defense).pop()			# Get random strat and remove from list
+	strat_list_defense.append(previousDefenderStrat)	# Add old strat back to list
+	previousDefenderStrat = strat						# Save current strat
+
+	# Build strat string
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- *\"{ strat[1] }\"*\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
+	
+	# Send strat
 	await ctx.send(strat_string)
 
 """!poggers Command

@@ -6,10 +6,10 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id, chin_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id, chin_id	# Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
-from random import randint, shuffle, choice
+from random import randint, shuffle, choice, randrange 
 from math import ceil
 from os import urandom
 from base64 import b64encode
@@ -126,22 +126,6 @@ async def back(ctx):
 @bot.command()
 async def quote(ctx):
 	"""!quote command
-
-	The quote command will find a channel called quotes,
-	pull a random message, and send it to the channel
-	"""
-	for channel in ctx.guild.text_channels:
-		if(channel.name == "quotes"):
-			quotes = []
-			quoteCount = 0
-			async for quote in channel.history(limit=None):
-				quotes.append(quote.content)
-				quoteCount += 1
-			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)])
-
-@bot.command()
-async def quotetts(ctx):
-	"""!quotetts command
 
 	The quote command will find a channel called quotes,
 	pull a random message, and send it to the channel with tts
@@ -273,6 +257,15 @@ async def chinsignal(ctx):
 	"""
 	await ctx.send(file=discord.File("chin_signal.png"))
 	await ctx.send(f"Calling <@{ chin_id }>!")
+  
+"""!poggers Command
+   incredibly advanced ai mimics a large crowd of users spamming the 
+   "pog" emoji """
+@bot.command()
+async def poggers(ctx):
+	PogAmount = randint(8,15)
+	for i in range(PogAmount):
+		await ctx.send(pog_id * randint(1, 10))
 
 ## Turn on the bot
 bot.run(bot_id)

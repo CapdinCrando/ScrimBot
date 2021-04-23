@@ -6,7 +6,7 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id, pog_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id, chin_id	# Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint, shuffle, choice, randrange 
@@ -44,12 +44,14 @@ with open("strats_attack.txt") as strat_attack_file:
 	strat_reader = csv.reader(strat_attack_file, delimiter="\t")
 	for row in strat_reader:
 		strat_list_attack.append(row)
+previousAttackerStrat = strat_list_attack.pop()
 
 strat_list_defense = []
 with open("strats_defense.txt") as strat_defend_file:
 	strat_reader = csv.reader(strat_defend_file, delimiter="\t")
 	for row in strat_reader:
 		strat_list_defense.append(row)
+previousDefenderStrat = strat_list_defense.pop()
 
 @bot.command()
 async def scrim(ctx):
@@ -227,12 +229,23 @@ async def stratattack(ctx):
 
 	Picks a random strategy from a list of attack strats and displays it
 	"""
-	strat = choice(strat_list_attack)
+	# Strat selection
+	shuffle(strat_list_attack)
+	strat = strat_list_attack.pop()
+
+	# Save old strat
+	global previousAttackerStrat
+	strat_list_attack.append(previousAttackerStrat)
+	previousAttackerStrat = strat
+
+	# Build strat string
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- \"*{ strat[1] }*\"\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
+	
+	# Send strat
 	await ctx.send(strat_string)
 
 @bot.command()
@@ -241,20 +254,40 @@ async def stratdefend(ctx):
 
 	Picks a random strategy from a list of defense strats and displays it
 	"""
-	strat = choice(strat_list_defense)
+	# Strat selection
+	shuffle(strat_list_defense)
+	strat = strat_list_defense.pop()
+
+	# Save old strat
+	global previousDefenderStrat
+	strat_list_defense.append(previousDefenderStrat)
+	previousDefenderStrat = strat
+
+	# Build strat string
 	strat_string = f"Random Strat Generated:\n\n**{ strat[0] }**\n- *\"{ strat[1] }\"*\n- { strat[2] }"
 	if len(strat) == 4:
 		strat_string += ":"
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
+	
+	# Send strat
 	await ctx.send(strat_string)
 
+@bot.command()
+async def chinsignal(ctx):
+	"""!chinsignal command
+
+	Sends a picture of the Crimson Chin and calls for a specifed user
+	"""
+	await ctx.send(file=discord.File("chin_signal.PNG"))
+	await ctx.send(f"Calling <@{ chin_id }>!")
+  
 """!poggers Command
    incredibly advanced ai mimics a large crowd of users spamming the 
    "pog" emoji """
 @bot.command()
 async def poggers(ctx):
-	PogAmount = randint(8,15)
+	PogAmount = randint(5,8)
 	for i in range(PogAmount):
 		await ctx.send(pog_id * randint(1, 10))
 

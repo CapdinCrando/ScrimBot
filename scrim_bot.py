@@ -279,7 +279,7 @@ async def chinsignal(ctx):
 
 	Sends a picture of the Crimson Chin and calls for a specifed user
 	"""
-	await ctx.send(file=discord.File("chin_signal.png"))
+	await ctx.send(file=discord.File("chin_signal.PNG"))
 	await ctx.send(f"Calling <@{ chin_id }>!")
   
 """!poggers Command

@@ -6,7 +6,7 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id	## Used for privacy reasons
+from constants import bigunnn_id, bot_id, chin_id	## Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint, shuffle, choice
@@ -264,6 +264,15 @@ async def stratdefend(ctx):
 		for op in strat[3].split(","):
 			strat_string += f"\n\t- { op }"
 	await ctx.send(strat_string)
+
+@bot.command()
+async def chinsignal(ctx):
+	"""!chinsignal command
+
+	Sends a picture of the Crimson Chin and calls for a specifed user
+	"""
+	await ctx.send(file=discord.File("chin_signal.png"))
+	await ctx.send(f"Calling <@{ chin_id }>!")
 
 ## Turn on the bot
 bot.run(bot_id)

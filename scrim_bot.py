@@ -254,7 +254,7 @@ async def stratdefend(ctx):
    "pog" emoji """
 @bot.command()
 async def poggers(ctx):
-	PogAmount = randint(8,15)
+	PogAmount = randint(5,8)
 	for i in range(PogAmount):
 		await ctx.send(pog_id * randint(1, 10))
 

@@ -61,10 +61,10 @@ async def scrim(ctx):
 	It will take this list and randomly assign them to two teams, and save and print the teams
 	Warning: Currently each bot instance only works with one Discord server!	
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		team2members.clear()
-		members = channel.members
+		members = clsVoice.channel.members
 
 		team_max = ceil(len(members)/2)
 		size1 = 0
@@ -100,8 +100,8 @@ async def move(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 to a different channel
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		newChannel = ctx.guild.voice_channels[1]
 		for member in team2members:
 			try:
@@ -116,8 +116,8 @@ async def back(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 back to the original channel
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		newChannel = ctx.guild.voice_channels[0]
 		for member in team2members:
 			try:
@@ -140,6 +140,24 @@ async def quote(ctx):
 				quotes.append(quote.content)
 				quoteCount += 1
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
+
+@bot.command()
+async def getallquotes(ctx):
+	"""
+	!getallquotes command
+
+	Gets all of the quotes from the quotes channel and
+	returns them in a text file to the user
+	"""
+	for channel in ctx.guild.text_channels:
+		if(channel.name == "quotes"):
+			quotes = ""
+			async for quote in channel.history(limit=None):
+				quotes += quote.content.replace('\n', '')
+				quotes += "\n"
+			with open("quotes.txt", "w") as out_file:
+				out_file.write(quotes)
+			await ctx.send(file=discord.File("quotes.txt"))
 
 @bot.command()
 async def sugg(ctx):
@@ -224,6 +242,18 @@ async def RandomDefenders(ctx):
 	await ctx.send(msg)
 
 @bot.command()
+async def randomperson(ctx):
+	"""!randomperson command
+
+	Picks a random person in the user's voice channel
+	"""
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
+		members = clsVoice.channel.members
+		choice_member = choice(members)
+		await ctx.send(f'<@{choice_member.id}>, it\'s your turn!')
+
+@bot.command()
 async def stratattack(ctx):
 	"""!stratattack command
 
@@ -281,6 +311,14 @@ async def chinsignal(ctx):
 	"""
 	await ctx.send(file=discord.File("chin_signal.PNG"))
 	await ctx.send(f"Calling <@{ chin_id }>!")
+
+@bot.command()
+async def noballs(ctx):
+	"""!noballs command
+
+	Challenges a particular user
+	"""
+	await ctx.send(f"<@{ chin_id }>\'s Honor has been challenged!")
   
 """!poggers Command
    incredibly advanced ai mimics a large crowd of users spamming the 

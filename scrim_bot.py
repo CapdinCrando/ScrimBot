@@ -143,6 +143,12 @@ async def quote(ctx):
 
 @bot.command()
 async def getallquotes(ctx):
+	"""
+	!getallquotes command
+
+	Gets all of the quotes from the quotes channel and
+	returns them in a text file to the user
+	"""
 	for channel in ctx.guild.text_channels:
 		if(channel.name == "quotes"):
 			quotes = ""

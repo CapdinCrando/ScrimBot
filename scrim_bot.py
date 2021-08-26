@@ -142,6 +142,24 @@ async def quote(ctx):
 			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
 
 @bot.command()
+async def getallquotes(ctx):
+	"""
+	!getallquotes command
+
+	Gets all of the quotes from the quotes channel and
+	returns them in a text file to the user
+	"""
+	for channel in ctx.guild.text_channels:
+		if(channel.name == "quotes"):
+			quotes = ""
+			async for quote in channel.history(limit=None):
+				quotes += quote.content.replace('\n', '')
+				quotes += "\n"
+			with open("quotes.txt", "w") as out_file:
+				out_file.write(quotes)
+			await ctx.send(file=discord.File("quotes.txt"))
+
+@bot.command()
 async def sugg(ctx):
 	"""!sugg command
 

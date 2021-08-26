@@ -61,10 +61,10 @@ async def scrim(ctx):
 	It will take this list and randomly assign them to two teams, and save and print the teams
 	Warning: Currently each bot instance only works with one Discord server!	
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		team2members.clear()
-		members = channel.members
+		members = clsVoice.channel.members
 
 		team_max = ceil(len(members)/2)
 		size1 = 0
@@ -100,8 +100,8 @@ async def move(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 to a different channel
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		newChannel = ctx.guild.voice_channels[1]
 		for member in team2members:
 			try:
@@ -116,8 +116,8 @@ async def back(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 back to the original channel
 	"""
-	channel = ctx.author.voice.channel
-	if(channel != None):
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
 		newChannel = ctx.guild.voice_channels[0]
 		for member in team2members:
 			try:

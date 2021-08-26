@@ -281,6 +281,14 @@ async def chinsignal(ctx):
 	"""
 	await ctx.send(file=discord.File("chin_signal.PNG"))
 	await ctx.send(f"Calling <@{ chin_id }>!")
+
+@bot.command()
+async def noballs(ctx):
+	"""!noballs command
+
+	Challenges a particular user
+	"""
+	await ctx.send(f"<@{ chin_id }>\'s Honor has been challenged!")
   
 """!poggers Command
    incredibly advanced ai mimics a large crowd of users spamming the 

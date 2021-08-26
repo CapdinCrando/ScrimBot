@@ -242,6 +242,18 @@ async def RandomDefenders(ctx):
 	await ctx.send(msg)
 
 @bot.command()
+async def randomperson(ctx):
+	"""!randomperson command
+
+	Picks a random person in the user's voice channel
+	"""
+	clsVoice = ctx.author.voice
+	if(clsVoice != None):
+		members = clsVoice.channel.members
+		choice_member = choice(members)
+		await ctx.send(f'<@{choice_member.id}>, it\'s your turn!')
+
+@bot.command()
 async def stratattack(ctx):
 	"""!stratattack command
 

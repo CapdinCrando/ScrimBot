@@ -6,7 +6,7 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id, pog_id, chin_id, api_key, base_id	# Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id, chin_id, api_key, base_id, add_link	# Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint, shuffle, choice, randrange 
@@ -143,7 +143,7 @@ async def addquote(ctx):
 
 	Displays the link used to add a new quote
 	"""
-	await ctx.send('https://airtable.com/shr080uprvb84A2pu')
+	await ctx.send(add_link)
 
 @bot.command()
 async def sugg(ctx):

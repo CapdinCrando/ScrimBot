@@ -133,6 +133,15 @@ async def quote(ctx):
 	"""!quote command
 
 	The quote command will access the quote api,
+	pick a random message, and send it to the channel
+	"""
+	await ctx.send(quoteapi.get_formatted_quote())
+
+@bot.command()
+async def quotetts(ctx):
+	"""!quote command
+
+	The quote command will access the quote api,
 	pick a random message, and send it to the channel with tts
 	"""
 	await ctx.send(quoteapi.get_formatted_quote(), tts=True)

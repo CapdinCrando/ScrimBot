@@ -5,6 +5,7 @@
 
 ## Imports
 import csv
+from hashlib import new
 import discord
 from constants import bigunnn_id, bot_id, pog_id, chin_id	# Used for privacy reasons
 from discord.ext import commands
@@ -20,7 +21,7 @@ intents.members = True
 ## Bot Setup
 bot = commands.Bot(command_prefix='!', intents = intents)
 
-team2members = []	# Initalize team members array
+team2members = {}	# Initalize team members array
 
 attackersFile = open("attackers.txt","r")   # Initialize attackers and defenders input files
 defendersFile = open("defenders.txt","r")
@@ -61,10 +62,14 @@ async def scrim(ctx):
 	It will take this list and randomly assign them to two teams, and save and print the teams
 	Warning: Currently each bot instance only works with one Discord server!	
 	"""
-	clsVoice = ctx.author.voice
-	if(clsVoice != None):
-		team2members.clear()
-		members = clsVoice.channel.members
+	channel = ctx.author.voice.channel
+	if(channel != None):
+		guild_id = ctx.message.guild.id
+		if guild_id in team2members:
+			del team2members[guild_id]
+		team2members[guild_id] = {}
+		team2members[guild_id]['members'] = []
+		members = channel.members
 
 		team_max = ceil(len(members)/2)
 		size1 = 0
@@ -82,12 +87,12 @@ async def scrim(ctx):
 					if(size1 == team_max): s = 1
 				else:
 					team2 += "- " + str(member.nick) + "\n"
-					team2members.append(member)
+					team2members[guild_id].append(member)
 					size2 +=1
 					if(size2 == team_max): s = 2
 			elif(s == 1):
 				team2 += "- " + str(member.nick) + "\n"
-				team2members.append(member)
+				team2members[guild_id].append(member)
 			else:
 				team1 += "- " + str(member.nick) + "\n"
 
@@ -100,14 +105,27 @@ async def move(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 to a different channel
 	"""
-	clsVoice = ctx.author.voice
-	if(clsVoice != None):
-		newChannel = ctx.guild.voice_channels[1]
-		for member in team2members:
-			try:
-				await member.move_to(newChannel)
-			except HTTPException:
-				await ctx.send('ERROR: Cannot move ' + member.nick)
+	channel = ctx.author.voice.channel
+	if(channel != None):
+		guild_id = ctx.message.guild.id
+		if guild_id in team2members:
+			channel_count = len(ctx.guild.voice_channels)
+			if channel_count == 1:
+				await ctx.send('ERROR: Cannot find channel to move others to!')
+			else:
+				if channel.position == channel_count - 1:
+					newChannelIndex = channel.position - 1
+				else:
+					newChannelIndex = channel.position + 1
+				team2members[guild_id]['old_channel_index'] = channel.position
+				for member in team2members[guild_id]['members']:
+					try:
+						await member.move_to(ctx.guild.voice_channels[newChannelIndex])
+					except HTTPException:
+						await ctx.send('ERROR: Cannot move ' + member.nick)
+		else:
+			await ctx.send('ERROR: No saved team configuration. Run !scrim first')
+		
 
 @bot.command()
 async def back(ctx):
@@ -116,14 +134,18 @@ async def back(ctx):
 	When called, the move command will take the last saved team configuration,
 	and move team 2 back to the original channel
 	"""
-	clsVoice = ctx.author.voice
-	if(clsVoice != None):
-		newChannel = ctx.guild.voice_channels[0]
-		for member in team2members:
-			try:
-				await member.move_to(newChannel)
-			except HTTPException:
-				await ctx.send('ERROR: Cannot move ' + member.nick)
+	channel = ctx.author.voice.channel
+	if(channel != None):
+		guild_id = ctx.message.guild.id
+		if guild_id in team2members:
+				newChannelIndex = team2members[guild_id]['old_channel_index']
+				for member in team2members[guild_id]['members']:
+					try:
+						await member.move_to(ctx.guild.voice_channels[newChannelIndex])
+					except HTTPException:
+						await ctx.send('ERROR: Cannot move ' + member.nick)
+		else:
+			await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
 @bot.command()
 async def quote(ctx):

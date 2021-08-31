@@ -6,13 +6,16 @@
 ## Imports
 import csv
 import discord
-from constants import bigunnn_id, bot_id, pog_id, chin_id	# Used for privacy reasons
+from constants import bigunnn_id, bot_id, pog_id, chin_id, api_key, base_id	# Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
 from random import randint, shuffle, choice, randrange 
 from math import ceil
 from os import urandom
 from base64 import b64encode
+from quoteApi import QuoteApi
+
+quoteapi = QuoteApi(api_key, base_id)
 
 intents = discord.Intents.default()
 intents.members = True
@@ -129,17 +132,10 @@ async def back(ctx):
 async def quote(ctx):
 	"""!quote command
 
-	The quote command will find a channel called quotes,
-	pull a random message, and send it to the channel with tts
+	The quote command will access the quote api,
+	pick a random message, and send it to the channel with tts
 	"""
-	for channel in ctx.guild.text_channels:
-		if(channel.name == "quotes"):
-			quotes = []
-			quoteCount = 0
-			async for quote in channel.history(limit=None):
-				quotes.append(quote.content)
-				quoteCount += 1
-			if(quoteCount > 0): await ctx.send(quotes[randint(0, quoteCount - 1)], tts=True)
+	await ctx.send(quoteapi.get_formatted_quote(), tts=True)
 
 @bot.command()
 async def sugg(ctx):

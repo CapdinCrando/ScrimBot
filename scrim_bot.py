@@ -139,12 +139,20 @@ async def quote(ctx):
 
 @bot.command()
 async def quotetts(ctx):
-	"""!quote command
+	"""!quotetts command
 
 	The quote command will access the quote api,
 	pick a random message, and send it to the channel with tts
 	"""
 	await ctx.send(quoteapi.get_formatted_quote(), tts=True)
+
+@bot.command()
+async def addquote(ctx):
+	"""!addquote command
+
+	Displays the link used to add a new quote
+	"""
+	await ctx.send('https://airtable.com/shr080uprvb84A2pu')
 
 @bot.command()
 async def sugg(ctx):

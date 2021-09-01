@@ -57,6 +57,16 @@ with open("strats_defense.txt") as strat_defend_file:
 		strat_list_defense.append(row)
 previousDefenderStrat = strat_list_defense.pop()
 
+def get_nickname(user):
+	'''get_nickname function
+
+	Used to get a user's nickname and return it.
+	If user does not have a nickname, it will return their username.
+	'''
+	if user.nick == None:
+		return user.name
+	return user.nick
+
 @bot.command()
 async def scrim(ctx):
 	"""!scrim command
@@ -85,19 +95,19 @@ async def scrim(ctx):
 			if(s == 0):
 				r = randint(0, 1)
 				if(r == 0):
-					team1 += "- " + str(member.nick) + "\n"
+					team1 += "- " + str(get_nickname(member)) + "\n"
 					size1 += 1
 					if(size1 == team_max): s = 1
 				else:
-					team2 += "- " + str(member.nick) + "\n"
-					team2members[guild_id].append(member)
+					team2 += "- " + str(get_nickname(member)) + "\n"
+					team2members[guild_id]['members'].append(member)
 					size2 +=1
 					if(size2 == team_max): s = 2
 			elif(s == 1):
-				team2 += "- " + str(member.nick) + "\n"
-				team2members[guild_id].append(member)
+				team2 += "- " + str(get_nickname(member)) + "\n"
+				team2members[guild_id]['members'].append(member)
 			else:
-				team1 += "- " + str(member.nick) + "\n"
+				team1 += "- " + str(get_nickname(member)) + "\n"
 
 		await ctx.send(team1 + team2)
 
@@ -125,7 +135,7 @@ async def move(ctx):
 					try:
 						await member.move_to(ctx.guild.voice_channels[newChannelIndex])
 					except HTTPException:
-						await ctx.send('ERROR: Cannot move ' + member.nick)
+						await ctx.send('ERROR: Cannot move ' + get_nickname(member))
 		else:
 			await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 		
@@ -146,7 +156,7 @@ async def back(ctx):
 					try:
 						await member.move_to(ctx.guild.voice_channels[newChannelIndex])
 					except HTTPException:
-						await ctx.send('ERROR: Cannot move ' + member.nick)
+						await ctx.send('ERROR: Cannot move ' + get_nickname(member))
 		else:
 			await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 

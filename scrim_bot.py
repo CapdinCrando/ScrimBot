@@ -167,7 +167,7 @@ async def quote(ctx):
 	The quote command will access the quote api,
 	pick a random message, and send it to the channel with tts
 	"""
-	await ctx.send(quoteapi.get_formatted_quote(), tts=True)
+	await ctx.send(quoteapi.get_quote(), tts=True)
 
 @bot.command()
 async def addquote(ctx):
@@ -182,18 +182,13 @@ async def getallquotes(ctx):
 	"""
 	!getallquotes command
 
-	Gets all of the quotes from the quotes channel and
+	Gets all of the quotes from the quotes api and
 	returns them in a text file to the user
 	"""
-	for channel in ctx.guild.text_channels:
-		if(channel.name == "quotes"):
-			quotes = ""
-			async for quote in channel.history(limit=None):
-				quotes += quote.content.replace('\n', '')
-				quotes += "\n"
-			with open("quotes.txt", "w") as out_file:
-				out_file.write(quotes)
-			await ctx.send(file=discord.File("quotes.txt"))
+	quote_data = quoteapi.get_all_quotes()
+	with open("quotes.txt", "w", encoding='utf-8') as out_file:
+		out_file.write(quote_data)
+	await ctx.send(file=discord.File("quotes.txt"))
 
 @bot.command()
 async def sugg(ctx):

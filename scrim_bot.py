@@ -7,6 +7,7 @@
 import csv
 from hashlib import new
 import discord
+import asyncio
 from constants import bigunnn_id, bot_id, pog_id, chin_id, api_key, base_id, add_link	# Used for privacy reasons
 from discord.ext import commands
 from discord import HTTPException
@@ -16,10 +17,13 @@ from os import urandom
 from base64 import b64encode
 from quoteApi import QuoteApi
 
+
 quoteapi = QuoteApi(api_key, base_id)
 
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
+intents.voice_states = True
 
 ## Bot Setup
 bot = commands.Bot(command_prefix='!', intents = intents)
@@ -359,6 +363,33 @@ async def poggers(ctx):
 	PogAmount = randint(5,8)
 	for i in range(PogAmount):
 		await ctx.send(pog_id * randint(1, 10))
+
+
+## Events
+"""
+on_voice_state_update event
+
+Called when someone joins, leaves, is muted, or is defeaned
+"""
+@bot.event
+async def on_voice_state_update(member, before, after):
+
+	'''
+	Chin welcome event
+	Plays a certain sound when a certain someone joins the channel
+	'''
+	# Get chin id
+	if(member.id == chin_id):
+
+		# Make sure channel is not None
+		channel = after.channel
+		if(channel != None):
+			# Connect to voice
+			voice_client = await channel.connect()
+			
+			# Play sound and leave when done
+			voice_client.play(discord.FFmpegPCMAudio(executable='bin/ffmpeg.exe', source='chin.mp3'), 
+				after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), bot.loop))
 
 ## Turn on the bot
 bot.run(bot_id)

@@ -1,0 +1,332 @@
+{
+    "attack": [
+        {
+            "stratName": "Random",
+            "quote": "All hail the nay nay goblins",
+            "teamName": "Let the Nay Nay Goblins Decide"
+        },
+        {
+            "stratName": "John's Dildo",
+            "quote": "Just ram it in as hard as you can",
+            "teamName": "Those who like to give it rough",
+            "teamMembers": [
+                "Glaz",
+                "Monty or Ying",
+                "Capitao",
+                "Nomad",
+                "Gridlock"
+            ]
+        },
+        {
+            "stratName": "Gotta Go Fast",
+            "quote": "Super Sanic Speed:tm:",
+            "teamName": "Speed Force Users",
+            "teamMembers": [
+                "Ash",
+                "IQ",
+                "Capitao",
+                "Hibana",
+                "Maverick"
+            ]
+        },
+        {
+            "stratName": "The Pain Train",
+            "quote": "Oh...",
+            "teamName": "Harbinger's of Pain",
+            "teamMembers": [
+                "Monty",
+                "Blitz",
+                "Fuze (Shield)",
+                "Blackbeard"
+            ]
+        },
+        {
+            "stratName": "Breach Team Six",
+            "quote": "I brought some hard breach for your hard breach",
+            "teamName": "Totally not hard breach",
+            "teamMembers": [
+                "Thermite",
+                "Hibana",
+                "Maverick",
+                "Ace",
+                "Anyone with hard breach device"
+            ]
+        },
+        {
+            "stratName": "Tracking 101",
+            "quote": "I will find you, and I will kill you",
+            "teamName": "Hunters",
+            "teamMembers": [
+                "Jackal",
+                "Dokkaebi",
+                "Lion",
+                "Iana"
+            ]
+        },
+        {
+            "stratName": "Anti-Roam",
+            "quote": "No roaming for you!",
+            "teamName": "Fun stealers",
+            "teamMembers": [
+                "Jackal",
+                "Dokkaebi",
+                "Lion",
+                "Nomad",
+                "Gridlock"
+            ]
+        },
+        {
+            "stratName": "Rush",
+            "quote": "Get in there!",
+            "teamName": "Those who don't give a frick",
+            "teamMembers": [
+                "Blitz",
+                "Ash",
+                "Sledge",
+                "Ying",
+                "Zofia",
+                "Finka",
+                "Nokk",
+                "Amaru"
+            ]
+        },
+        {
+            "stratName": "The Yellow Bellies",
+            "quote": "They eat at the Yellow Deli",
+            "teamName": "Yellow People",
+            "teamMembers": [
+                "Blitz",
+                "IQ",
+                "Blackbeard",
+                "Lion",
+                "Finka"
+            ]
+        },
+        {
+            "stratName": "Soft Destruction",
+            "quote": "Who even needs hard breach?",
+            "teamName": "The Superior Breach Team",
+            "teamMembers": [
+                "Ash",
+                "Sledge",
+                "Buck",
+                "Zofia",
+                "Anyone with breach device"
+            ]
+        },
+        {
+            "stratName": "Flashers",
+            "quote": "Oh God, my eyes!",
+            "teamName": "Those wild spirits (With stun grenades)",
+            "teamMembers": [
+                "Sledge",
+                "Thermite",
+                "Buck",
+                "Blackbeard",
+                "Hibana",
+                "Dokkaebi",
+                "Finka",
+                "Lion",
+                "Nomad",
+                "Amaru",
+                "Flores"
+            ]
+        }
+    ],
+    "defend": [
+        {
+            "stratName": "Random",
+            "quote": "All hail the nay nay goblins",
+            "teamName": "Let the Nay Nay Goblins Decide"
+        },
+        {
+            "stratName": "Shotgun Only",
+            "quote": "Shotty to your body",
+            "teamName": "All ops have shotguns **EXCEPT**",
+            "teamMembers": [
+                "Tachanka",
+                "Clash",
+                "Mozzie",
+                "Wamai",
+                "Aruni"
+            ]
+        },
+        {
+            "stratName": "The Funhouse Protocol:tm:",
+            "quote": "Oh God, they're everwhere!!!",
+            "teamName": "Funhouse Protocol Operators",
+            "teamMembers": [
+                "Kapkan",
+                "Frost",
+                "Lesion",
+                "Ela",
+                "Melusi",
+                "Goyo (Alternative)"
+            ]
+        },
+        {
+            "stratName": "Intel, All the Intel",
+            "quote": "I seeeeeee yooooouuuuuu!",
+            "teamName": "Peeping Toms",
+            "teamMembers": [
+                "Pulse",
+                "Valkyrie",
+                "Mira",
+                "Echo",
+                "Maestro",
+                "Mozzie"
+            ]
+        },
+        {
+            "stratName": "The No Drone Zone:tm:",
+            "quote": "Got a drone infestation? No problem!",
+            "teamName": "Drone Exterminators",
+            "teamMembers": [
+                "Mute",
+                "Bandit (With barbed wire)",
+                "Vigil",
+                "Kaid (With barbed wire)",
+                "Mozzie"
+            ]
+        },
+        {
+            "stratName": "Holding Down the Fort",
+            "quote": "I'm gonna stop you right there",
+            "teamName": "Objective Club Bouncers",
+            "teamMembers": [
+                "Mute",
+                "Castle",
+                "Bandit",
+                "Kaid",
+                "Aruni"
+            ]
+        },
+        {
+            "stratName": "War Crimes",
+            "quote": "The Geneva Convention was just a suggestion",
+            "teamName": "International Criminals",
+            "teamMembers": [
+                "Smoke",
+                "Kapkan",
+                "Tachanka",
+                "Frost",
+                "Lesion",
+                "Caveira",
+                "Goyo"
+            ]
+        },
+        {
+            "stratName": "No Grenades for You",
+            "quote": "It's like stealing a little kid's lollie pop",
+            "teamName": "Candy Thieves",
+            "teamMembers": [
+                "Castle",
+                "Jager",
+                "Wamai",
+                "Warden",
+                "Aruni"
+            ]
+        },
+        {
+            "stratName": "Herdle Race",
+            "quote": "Last place gets shot in the kneecap",
+            "teamName": "Bring any operator with a shield",
+            "teamMembers": [
+                "Smoke",
+                "Frost",
+                "Echo",
+                "Ela",
+                "Alibi",
+                "Goyo"
+            ]
+        },
+        {
+            "stratName": "The Chocolate Factory",
+            "quote": "Just don't let Charlie in",
+            "teamName": "Make sure to yeet those Wonka Bars (Nitro Cells)",
+            "teamMembers": [
+                "Mute",
+                "Pulse",
+                "Kapkan",
+                "Bandit",
+                "Valkyrie",
+                "Mira",
+                "Kaid",
+                "Mozzie",
+                "Warden",
+                "Goyo",
+                "Melusi"
+            ]
+        },
+        {
+            "stratName": "The Everlasting Gobstopper",
+            "quote": "Don't bite too hard",
+            "teamName": "Don't forget those Jawbreakers (Impact Grenades)",
+            "teamMembers": [
+                "Rook",
+                "Kapkan",
+                "Caveira",
+                "Valkyrie",
+                "Echo",
+                "Lesion",
+                "Vigil",
+                "Maestro",
+                "Alibi",
+                "Clash",
+                "Wamai",
+                "Melusi"
+            ]
+        },
+        {
+            "stratName": "Gotta Go Fast",
+            "quote": "Super Sanic Speed:tm:",
+            "teamName": "Speed Force Users",
+            "teamMembers": [
+                "Pulse",
+                "Bandit",
+                "Caveira",
+                "Ela",
+                "Vigil",
+                "Alibi",
+                "Melusi"
+            ]
+        },
+        {
+            "stratName": "Rook's Aftermath Buffet",
+            "quote": "Oh God, he's coming back!",
+            "teamName": "Fat Lard's BFF's",
+            "teamMembers": [
+                "Doc",
+                "Rook",
+                "Tachanka",
+                "Echo",
+                "Mira",
+                "Maestro",
+                "Clash",
+                "Kaid"
+            ]
+        },
+        {
+            "stratName": "Open Floor Plan",
+            "quote": "Mr. Gorbachev, tear down this wall!",
+            "teamName": "Destroy every wall, hatch, window, etc"
+        },
+        {
+            "stratName": "What Would Eli Do?",
+            "quote": "Guyyyyys, you didn't get hatchessss",
+            "teamName": "Just do what Eli would do"
+        },
+        {
+            "stratName": "The AA12 Special",
+            "quote": "AA12 -> AA36 -> AA10000 -> AA∞",
+            "teamName": "Those who like to AAAAAAAAAAAAAAAAAAAAAA",
+            "teamMembers": [
+                "Alibi",
+                "Maestro",
+                "Azami",
+                "Kaid (Honorary)",
+                "Vigil (Honorary)"
+            ]
+        }
+    ]
+}

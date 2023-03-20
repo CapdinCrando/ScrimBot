@@ -1,3 +1,4 @@
-constants.py
+config.json
 __pycache__
 /.vs/
+intros/

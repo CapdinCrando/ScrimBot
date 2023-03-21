@@ -1,7 +1,12 @@
-FROM python:3.10
+FROM python:3.10-slim
+
+ADD cogs .
+ADD games .
+ADD bot_config.py .
+ADD scrim_bot.py . 
+ADD requirements.txt .
 
 RUN apt-get -y update
-RUN apt-get -y upgrade
 RUN apt-get install -y ffmpeg
 RUN pip install -r requirements.txt
 

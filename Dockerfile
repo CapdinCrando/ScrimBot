@@ -1,5 +1,7 @@
 FROM python:3.10-slim
 
+WORKDIR /scrimbot
+
 ADD cogs .
 ADD games .
 ADD bot_config.py .

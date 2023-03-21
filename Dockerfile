@@ -10,5 +10,4 @@ RUN apt-get -y update
 RUN apt-get install -y ffmpeg
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["./scrim_bot"]
 CMD ["python", "./scrim_bot.py"]

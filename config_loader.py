@@ -1,7 +1,7 @@
 import os
 import json
 
-config_file_name = 'config.json'
+config_file_name = 'config/config.json'
 
 needed_parameters = ['bot_id']
 optional_parameters = ['bigunnn_id', 'chin_id', 'pog_id']

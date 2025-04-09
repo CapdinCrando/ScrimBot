@@ -9,7 +9,7 @@ from discord.ext import commands
 
 import os
 import asyncio
-from bot_config import bot_config
+from config_loader import bot_config
 
 ## Create intents
 intents = discord.Intents.default()

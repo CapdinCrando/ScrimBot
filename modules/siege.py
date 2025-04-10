@@ -5,7 +5,7 @@ import os
 import json
 from random import randint, choice
 
-class SiegeCog(bot_module.Cog):
+class SiegeCog(bot_module.Module):
 
     def init_module(self):
 

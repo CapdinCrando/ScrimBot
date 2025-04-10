@@ -3,7 +3,7 @@ import bot_module
 
 from random import choice
 
-class FunnyCog(bot_module.Cog):
+class FunnyCog(bot_module.Module):
 
     @commands.command()
     async def quote(self, ctx):

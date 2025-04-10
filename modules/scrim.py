@@ -6,7 +6,7 @@ from bot_utils import get_nickname
 from math import ceil
 from random import randint
 
-class ScrimCog(bot_module.Cog):
+class ScrimCog(bot_module.Module):
 
     def init_module(self):
         self.team2members = {} # Initialize team members array

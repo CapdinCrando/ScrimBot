@@ -19,7 +19,7 @@ intents.voice_states = True
 ## Bot Setup
 bot = commands.Bot(command_prefix='!', intents = intents)
 
-## Add bot cogs
+## Add bot modules
 async def load_extensions():
     for bot_module_name, bot_module_config in bot_config.modules.items():
         if bot_module_config.enabled:

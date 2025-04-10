@@ -3,7 +3,7 @@ import attrs
 from discord.ext import commands
 
 @attrs.define
-class Cog(commands.Cog):
+class Module(commands.Cog):
 
     module_name: str
     bot: commands.Bot

@@ -7,7 +7,7 @@ from random import randint
 
 import bot_module
 
-class CustomCog(bot_module.Cog):
+class CustomCog(bot_module.Module):
 
     chin_id: int
     bigunnn_id: int

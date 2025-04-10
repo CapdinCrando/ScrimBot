@@ -8,7 +8,7 @@ import asyncio
 from random import choice
 
 ## Events
-class EventsCog(bot_module.Cog):
+class EventsCog(bot_module.Module):
 
     ffmpeg_location: str
 

@@ -1,3 +1,5 @@
+## Imports
+# Third Party
 import os
 import json
 import attrs
@@ -15,7 +17,7 @@ class BotConfig():
     bot_id: str
     modules: dict[str, BotModuleConfig]
 
-    def get_module_config(self, module_name):
+    def get_module_config(self, module_name: str):
         self.modules.get(module_name, {})
 
 ## Read config file

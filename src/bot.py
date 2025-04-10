@@ -1,14 +1,18 @@
 ## ScrimBot
-# Made for the DeathSquad Discord Server by CapdinCrando
+# Made for the DeathSquad and CMT Discord Servers by CapdinCrando
 # Has many useful features, such as team selection and name changing
 # Licensed under the GNU General Public License v3.0
 
 ## Imports
+# Local
+from bot_config import bot_config
+
+# Discord
 import discord
 from discord.ext import commands
 
+# Third Party
 import asyncio
-from bot_config import bot_config
 
 ## Create intents
 intents = discord.Intents.default()
@@ -21,6 +25,12 @@ bot = commands.Bot(command_prefix='!', intents = intents)
 
 ## Add bot modules
 async def load_extensions():
+    '''
+    Goes through the module list from the config and loads
+    the ones that have the 'enabled' field set to 'true'.
+    '''
+
+    # Go through module list and, if enabled, load modules
     for bot_module_name, bot_module_config in bot_config.modules.items():
         if bot_module_config.enabled:
             await bot.load_extension(f'modules.{bot_module_name}')

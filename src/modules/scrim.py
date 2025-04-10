@@ -1,18 +1,31 @@
-from discord.ext import commands
-from discord import HTTPException
+## Imports
+# Local
 import bot_module
 from bot_utils import get_nickname
 
+# Discord
+from discord.ext import commands
+from discord import HTTPException
+
+# Third Party
 from math import ceil
 from random import randint
 
+## Module
 class ScrimCommands(bot_module.Module):
+    '''ScrimCommands module
+
+    Adds commands for creating and managing scrim teams.
+    '''
 
     def init_module(self):
+        '''
+        Initialization function for bot modules.
+        '''
         self.team2members = {} # Initialize team members array
 
     @commands.command()
-    async def scrim(self, ctx):
+    async def scrim(self, ctx: commands.Context):
         """!scrim command
 
         When called, the bot will take a list of all users in the voice channel of the author
@@ -56,7 +69,7 @@ class ScrimCommands(bot_module.Module):
             await ctx.send(team1 + team2)
 
     @commands.command()
-    async def move(self, ctx):
+    async def move(self, ctx: commands.Context):
         """!move command
 
         When called, the move command will take the last saved team configuration,
@@ -84,7 +97,7 @@ class ScrimCommands(bot_module.Module):
                 await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
     @commands.command()
-    async def back(self, ctx):
+    async def back(self, ctx: commands.Context):
         """!back command
 
         When called, the move command will take the last saved team configuration,
@@ -103,5 +116,5 @@ class ScrimCommands(bot_module.Module):
             else:
                 await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await ScrimCommands.add_to_bot('scrim', bot)

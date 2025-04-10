@@ -1,11 +1,21 @@
-from discord.ext import commands
+## Imports
+# Local
 import bot_module
 
+# Discord
+from discord.ext import commands
+
+# Third Party
 import os
 import json
 from random import randint, choice
 
+## Module
 class SiegeCommands(bot_module.Module):
+    '''SiegeCommands module
+
+    Adds commands for Siege.
+    '''
 
     def init_module(self):
 
@@ -62,7 +72,7 @@ class SiegeCommands(bot_module.Module):
 
         return msg
 
-    def getStrat(self, type):
+    def getStrat(self, type: str):
 
         # Pick strat
         strat = choice(self.strat_data[type])
@@ -77,7 +87,7 @@ class SiegeCommands(bot_module.Module):
         return strat_string
 
     @commands.command()
-    async def random(self, ctx, type='both'):
+    async def random(self, ctx: commands.Context, type: str ='both'):
         """!random command
 
         Generates 5 random attackers or defenders from Siege
@@ -104,7 +114,7 @@ class SiegeCommands(bot_module.Module):
             await ctx.send(pick_string)
 
     @commands.command()
-    async def strat(self, ctx, type='all'):
+    async def strat(self, ctx: commands.Context, type='all'):
         """!strat command
 
         Picks a random strategy from a list of strats and displays it.
@@ -138,5 +148,5 @@ class SiegeCommands(bot_module.Module):
         if(strat_string):
             await ctx.send(strat_string)
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await SiegeCommands.add_to_bot('siege', bot)

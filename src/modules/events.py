@@ -1,14 +1,22 @@
-
-import discord
-from discord.ext import commands
+## Imports
+# Local
 import bot_module
 
+# Discord
+import discord
+from discord.ext import commands
+
+# Third Party
 import os
 import asyncio
 from random import choice
 
-## Events
+## Module
 class CustomEvents(bot_module.Module):
+    '''CustomEvents module
+
+    Adds custom event handlers.
+    '''
 
     ffmpeg_location: str
 
@@ -18,7 +26,7 @@ class CustomEvents(bot_module.Module):
     Called when someone joins, leaves, is muted, or is deafened
     """
     @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
+    async def on_voice_state_update(self, member: discord.Member, before: commands.Context, after: commands.Context):
 
         '''
         Plays an intro sound when someone joins a voice channel
@@ -47,5 +55,5 @@ class CustomEvents(bot_module.Module):
                     voice_client.play(discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
                         after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await CustomEvents.add_to_bot('events', bot)

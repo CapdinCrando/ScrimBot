@@ -1,12 +1,22 @@
-from discord.ext import commands
+## Imports
+# Local
 import bot_module
 
+# Discord
+from discord.ext import commands
+
+# Third Party
 from random import choice
 
+## Module
 class FunnyCommands(bot_module.Module):
+    '''FunnyCommands module
+
+    Adds commands that are, put simply, funny.
+    '''
 
     @commands.command()
-    async def quote(self, ctx):
+    async def quote(self, ctx: commands.Context):
         """!quote command
         The quote command will find a channel called quotes,
         pull a random message, and send it to the channel with tts
@@ -23,7 +33,7 @@ class FunnyCommands(bot_module.Module):
 
 
     @commands.command()
-    async def sugg(self, ctx):
+    async def sugg(self, ctx: commands.Context):
         """!sugg command
 
         Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
@@ -31,7 +41,7 @@ class FunnyCommands(bot_module.Module):
         await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
     @commands.command()
-    async def killmenow(self, ctx):
+    async def killmenow(self, ctx: commands.Context):
         """!killmenow command
         Chooses a random member in the author's text channel
         That member is sent a message telling them to "assasinate" the message author
@@ -51,7 +61,7 @@ class FunnyCommands(bot_module.Module):
                                     "Good luck, and don't get caught.")
 
     @commands.command()
-    async def fugg(self, ctx):
+    async def fugg(self, ctx: commands.Context):
         """!fugg command
 
         Insults a random server member
@@ -60,7 +70,7 @@ class FunnyCommands(bot_module.Module):
         await ctx.send(f'Fugg you, <@{fugg_member.id}>')
 
     @commands.command()
-    async def pick(self, ctx):
+    async def pick(self, ctx: commands.Context):
         """!pick command
 
         Picks a random person in the user's voice channel
@@ -72,5 +82,5 @@ class FunnyCommands(bot_module.Module):
             await ctx.send(f'<@{choice_member.id}>, I choose you!')
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await FunnyCommands.add_to_bot('funny', bot)

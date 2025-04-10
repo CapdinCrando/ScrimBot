@@ -6,6 +6,8 @@ import os
 import asyncio
 from random import choice
 
+ffmpeg_location = '/usr/bin/ffmpeg'
+
 ## Events
 class EventsCog(commands.Cog):
     def __init__(self, bot):
@@ -43,7 +45,7 @@ class EventsCog(commands.Cog):
                     voice_client = await after.channel.connect()
                 
                     # Play sound and leave when done
-                    voice_client.play(discord.FFmpegPCMAudio(executable='bin/ffmpeg.exe', source=intro_file_name), 
+                    voice_client.play(discord.FFmpegPCMAudio(executable=ffmpeg_location, source=intro_file_name), 
                         after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
                     
 async def setup(bot):

@@ -7,7 +7,6 @@
 import discord
 from discord.ext import commands
 
-import os
 import asyncio
 from bot_config import bot_config
 
@@ -22,9 +21,9 @@ bot = commands.Bot(command_prefix='!', intents = intents)
 
 ## Add bot cogs
 async def load_extensions():
-    for file in os.listdir('cogs/'):
-        if file.endswith(".py"):
-            await bot.load_extension('cogs.{}'.format(file[:-3]))
+    for bot_module_name, bot_module_config in bot_config.modules.items():
+        if bot_module_config.enabled:
+            await bot.load_extension(f'modules.{bot_module_name}')
 
 ## Main function
 async def main():

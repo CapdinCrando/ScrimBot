@@ -1,10 +1,9 @@
 from discord.ext import commands
+import bot_module
 
 from random import choice
 
-class FunnyCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+class FunnyCog(bot_module.Cog):
 
     @commands.command()
     async def quote(self, ctx):
@@ -19,7 +18,7 @@ class FunnyCog(commands.Cog):
                 quotes = [quote.content async for quote in channel.history(limit=None)]
 
                 # If quotes not empty, pick quote
-                if(quotes): 
+                if(quotes):
                     await ctx.send(choice(quotes), tts=True)
 
 
@@ -74,4 +73,4 @@ class FunnyCog(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(FunnyCog(bot))
+    await FunnyCog.add_to_bot('funny', bot)

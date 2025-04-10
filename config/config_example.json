@@ -1,3 +1,11 @@
 {
-    "bot_id": "Put your bot id here"
+    "bot_id": "Put your bot id here",
+    "modules": {
+        "events": {
+            "enabled": true,
+            "config": {
+                "ffmpeg_location": "/usr/bin/ffmpeg"
+            }
+        }
+    }
 }

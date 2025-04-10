@@ -1,24 +1,15 @@
 from discord.ext import commands
 from discord import HTTPException
+import bot_module
+from bot_utils import get_nickname
 
 from math import ceil
 from random import randint
 
-team2members = {}	# Initalize team members array
+class ScrimCog(bot_module.Cog):
 
-def get_nickname(user):
-	'''get_nickname function
-
-	Used to get a user's nickname and return it.
-	If user does not have a nickname, it will return their username.
-	'''
-	if user.nick == None:
-		return user.name
-	return user.nick
-
-class ScrimCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+    def init_module(self):
+        self.team2members = {} # Initialize team members array
 
     @commands.command()
     async def scrim(self, ctx):
@@ -26,15 +17,15 @@ class ScrimCog(commands.Cog):
 
         When called, the bot will take a list of all users in the voice channel of the author
         It will take this list and randomly assign them to two teams, and save and print the teams
-        Warning: Currently each bot instance only works with one Discord server!	
+        Warning: Currently each bot instance only works with one Discord server!
         """
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id
-            if guild_id in team2members:
-                del team2members[guild_id]
-            team2members[guild_id] = {}
-            team2members[guild_id]['members'] = []
+            if guild_id in self.team2members:
+                del self.team2members[guild_id]
+            self.team2members[guild_id] = {}
+            self.team2members[guild_id]['members'] = []
             members = channel.members
 
             team_max = ceil(len(members)/2)
@@ -53,12 +44,12 @@ class ScrimCog(commands.Cog):
                         if(size1 == team_max): s = 1
                     else:
                         team2 += "- " + str(get_nickname(member)) + "\n"
-                        team2members[guild_id]['members'].append(member)
+                        self.team2members[guild_id]['members'].append(member)
                         size2 +=1
                         if(size2 == team_max): s = 2
                 elif(s == 1):
                     team2 += "- " + str(get_nickname(member)) + "\n"
-                    team2members[guild_id]['members'].append(member)
+                    self.team2members[guild_id]['members'].append(member)
                 else:
                     team1 += "- " + str(get_nickname(member)) + "\n"
 
@@ -74,7 +65,7 @@ class ScrimCog(commands.Cog):
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id
-            if guild_id in team2members:
+            if guild_id in self.team2members:
                 channel_count = len(ctx.guild.voice_channels)
                 if channel_count == 1:
                     await ctx.send('ERROR: Cannot find channel to move others to!')
@@ -83,8 +74,8 @@ class ScrimCog(commands.Cog):
                         newChannelIndex = channel.position - 1
                     else:
                         newChannelIndex = channel.position + 1
-                    team2members[guild_id]['old_channel_index'] = channel.position
-                    for member in team2members[guild_id]['members']:
+                    self.team2members[guild_id]['old_channel_index'] = channel.position
+                    for member in self.team2members[guild_id]['members']:
                         try:
                             await member.move_to(ctx.guild.voice_channels[newChannelIndex])
                         except HTTPException:
@@ -102,9 +93,9 @@ class ScrimCog(commands.Cog):
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id
-            if guild_id in team2members:
-                    newChannelIndex = team2members[guild_id]['old_channel_index']
-                    for member in team2members[guild_id]['members']:
+            if guild_id in self.team2members:
+                    newChannelIndex = self.team2members[guild_id]['old_channel_index']
+                    for member in self.team2members[guild_id]['members']:
                         try:
                             await member.move_to(ctx.guild.voice_channels[newChannelIndex])
                         except HTTPException:
@@ -113,4 +104,4 @@ class ScrimCog(commands.Cog):
                 await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
 async def setup(bot):
-    await bot.add_cog(ScrimCog(bot))
+    await ScrimCog.add_to_bot('scrim', bot)

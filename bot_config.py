@@ -1,32 +1,30 @@
 import os
 import json
+import attrs
 
 config_file_name = 'config/config.json'
 
-needed_parameters = ['bot_id']
-optional_parameters = ['bigunnn_id', 'chin_id', 'pog_id']
+@attrs.define
+class BotModuleConfig():
+    enabled: bool
+    config: dict
 
+@attrs.define
 class BotConfig():
-    def __init__(self):
 
-        ## Read config file
-        if(not os.path.exists(config_file_name)):
-            print('[WARNING] config.json does not exist!')
-            exit(1)
+    bot_id: str
+    modules: dict[str, BotModuleConfig]
 
-        config_file_data = open(config_file_name)
-        config_json = json.load(config_file_data)
+    def get_module_config(self, module_name):
+        self.modules.get(module_name, {})
 
-        for p in needed_parameters:
-            if(p in config_json):
-                setattr(self, p, config_json[p])
-            else:
-                print('[WARNING] bot_id is not defined in config.json!')
-                exit(1)
+## Read config file
+if(not os.path.exists(config_file_name)):
+    print('[WARNING] config.json does not exist!')
+    exit(1)
 
-        for p in optional_parameters:
-            if(p in config_json):
-                setattr(self, p, config_json[p])
+with open(config_file_name) as config_file:
+    config_json = json.load(config_file)
 
 ## Instantiate Bot Config
-bot_config = BotConfig()
+bot_config = BotConfig(**config_json)

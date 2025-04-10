@@ -1,2 +1,5 @@
-# Add packages here
+# Core ScrimBot Packages
 discord.py
+attrs
+
+# Add module packages here

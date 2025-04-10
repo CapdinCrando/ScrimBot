@@ -6,6 +6,8 @@ ADD . .
 
 RUN apt-get -y update
 RUN apt-get install -y ffmpeg
-RUN pip install -r requirements.txt
 
-CMD ["python", "./bot.py"]
+RUN python -m venv /app/env
+RUN /app/env/bin/pip install -r requirements.txt
+
+CMD ["/app/env/bin/python", "./bot.py"]

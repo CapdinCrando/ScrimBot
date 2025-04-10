@@ -15,7 +15,7 @@ class EventsCog(bot_module.Module):
     """
     on_voice_state_update event
 
-    Called when someone joins, leaves, is muted, or is defeaned
+    Called when someone joins, leaves, is muted, or is deafened
     """
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):

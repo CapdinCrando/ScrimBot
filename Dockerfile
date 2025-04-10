@@ -10,4 +10,4 @@ RUN apt-get install -y ffmpeg
 RUN python -m venv /app/env
 RUN /app/env/bin/pip install -r requirements.txt
 
-CMD ["/app/env/bin/python", "./bot.py"]
+CMD ["/app/env/bin/python", "./src/bot.py"]

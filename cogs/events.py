@@ -25,11 +25,10 @@ class EventsCog(commands.Cog):
         
         # Check for join event
         if before.channel is None and after.channel is not None:
-
             # Check if intro folder exists
             intro_folder = 'intros/' + str(member.id)
             if(os.path.isdir(intro_folder)):
-                
+
                 # Folder exists, get all available files
                 sound_files = [f for f in os.listdir(intro_folder) if f.endswith('.mp3') and os.path.isfile(intro_folder + '/' + f) ]
 
@@ -41,6 +40,7 @@ class EventsCog(commands.Cog):
 
                     # Connect to voice
                     voice_client = await after.channel.connect()
+                    print(intro_file_name)
                 
                     # Play sound and leave when done
                     voice_client.play(discord.FFmpegPCMAudio(executable='bin/ffmpeg.exe', source=intro_file_name), 

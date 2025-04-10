@@ -7,7 +7,7 @@ from random import randint
 
 import bot_module
 
-class CustomCog(bot_module.Module):
+class CustomCommands(bot_module.Module):
 
     chin_id: int
     bigunnn_id: int
@@ -51,4 +51,4 @@ class CustomCog(bot_module.Module):
         await big.edit(nick=name)
 
 async def setup(bot):
-    await CustomCog.add_to_bot('custom', bot)
+    await CustomCommands.add_to_bot('custom', bot)

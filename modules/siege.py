@@ -5,7 +5,7 @@ import os
 import json
 from random import randint, choice
 
-class SiegeCog(bot_module.Module):
+class SiegeCommands(bot_module.Module):
 
     def init_module(self):
 
@@ -139,4 +139,4 @@ class SiegeCog(bot_module.Module):
             await ctx.send(strat_string)
 
 async def setup(bot):
-    await SiegeCog.add_to_bot('siege', bot)
+    await SiegeCommands.add_to_bot('siege', bot)

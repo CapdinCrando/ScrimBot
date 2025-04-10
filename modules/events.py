@@ -8,7 +8,7 @@ import asyncio
 from random import choice
 
 ## Events
-class EventsCog(bot_module.Module):
+class CustomEvents(bot_module.Module):
 
     ffmpeg_location: str
 
@@ -48,4 +48,4 @@ class EventsCog(bot_module.Module):
                         after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
 
 async def setup(bot):
-    await EventsCog.add_to_bot('events', bot)
+    await CustomEvents.add_to_bot('events', bot)

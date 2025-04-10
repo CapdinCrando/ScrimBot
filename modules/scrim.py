@@ -6,7 +6,7 @@ from bot_utils import get_nickname
 from math import ceil
 from random import randint
 
-class ScrimCog(bot_module.Module):
+class ScrimCommands(bot_module.Module):
 
     def init_module(self):
         self.team2members = {} # Initialize team members array
@@ -104,4 +104,4 @@ class ScrimCog(bot_module.Module):
                 await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
 async def setup(bot):
-    await ScrimCog.add_to_bot('scrim', bot)
+    await ScrimCommands.add_to_bot('scrim', bot)

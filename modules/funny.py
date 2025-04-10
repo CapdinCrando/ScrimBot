@@ -3,7 +3,7 @@ import bot_module
 
 from random import choice
 
-class FunnyCog(bot_module.Module):
+class FunnyCommands(bot_module.Module):
 
     @commands.command()
     async def quote(self, ctx):
@@ -73,4 +73,4 @@ class FunnyCog(bot_module.Module):
 
 
 async def setup(bot):
-    await FunnyCog.add_to_bot('funny', bot)
+    await FunnyCommands.add_to_bot('funny', bot)

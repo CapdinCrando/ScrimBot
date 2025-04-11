@@ -10,27 +10,18 @@ from random import choice
 
 ## Module
 class FunnyCommands(bot_module.Module):
-    '''FunnyCommands module
-
-    Adds commands that are, put simply, funny.
-    '''
+    '''Adds commands that are, put simply, funny.'''
 
     @commands.command()
     async def sugg(self, ctx: commands.Context):
-        """!sugg command
+        '''Sends a "SCHLORP SCHLORP SCHLORP SCHLORP" message'''
 
-        Sends a 'SCHLORP SCHLORP SCHLORP SCHLORP' message to Discord channel
-        """
         await ctx.send('SCHLORP SCHLORP SCHLORP SCHLORP')
 
     @commands.command()
     async def killmenow(self, ctx: commands.Context):
-        """!killmenow command
-        Chooses a random member in the author's text channel
-        That member is sent a message telling them to "assassinate" the message author
-        Disclaimer: 	The message specifies for this to be done in a video game,
-                        as we do not condone murder or contract killing
-        """
+        '''Choose a random person in the voice channel to kill you (in game)'''
+
         target = ctx.author
         voice = target.voice
         if(voice != None):
@@ -45,19 +36,15 @@ class FunnyCommands(bot_module.Module):
 
     @commands.command()
     async def fugg(self, ctx: commands.Context):
-        """!fugg command
+        '''Insult a random server member'''
 
-        Insults a random server member
-        """
         fugg_member = choice(ctx.guild.members)
         await ctx.send(f'Fugg you, <@{fugg_member.id}>')
 
     @commands.command()
     async def pick(self, ctx: commands.Context):
-        """!pick command
+        '''Picks a random person in the user's voice channel'''
 
-        Picks a random person in the user's voice channel
-        """
         clsVoice = ctx.author.voice
         if(clsVoice != None):
             members = clsVoice.channel.members

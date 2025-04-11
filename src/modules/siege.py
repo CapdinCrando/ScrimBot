@@ -12,10 +12,7 @@ from random import randint, choice
 
 ## Module
 class SiegeCommands(bot_module.Module):
-    '''SiegeCommands module
-
-    Adds commands for Siege.
-    '''
+    '''Adds commands for Rainbow Six: Siege.'''
 
     def init_module(self):
 
@@ -87,11 +84,13 @@ class SiegeCommands(bot_module.Module):
         return strat_string
 
     @commands.command()
-    async def random(self, ctx: commands.Context, type: str ='both'):
-        """!random command
+    async def siege(self, ctx: commands.Context):
+        '''Game commands for Rainbow Six: Siege'''
+        pass
 
-        Generates 5 random attackers or defenders from Siege
-        """
+    @siege.command()
+    async def random(self, ctx: commands.Context, type: str ='both'):
+        '''Generate 5 random attackers or defenders. Include "attack" or "defend" to only generate for one side.'''
 
         pick_string = ''
         if(type == 'attack'):
@@ -106,42 +105,26 @@ class SiegeCommands(bot_module.Module):
             pick_string += self.getDefenders()
 
         else:
-            await ctx.send('Invalid input! Please input either attack or defend (or don\'t input anything at all)')
+            await ctx.send('Please use command with "attack", "defend", or "both".')
             return
 
         # Send string if has content
         if(pick_string):
             await ctx.send(pick_string)
 
-    @commands.command()
-    async def strat(self, ctx: commands.Context, type='all'):
-        """!strat command
-
-        Picks a random strategy from a list of strats and displays it.
-        Will do either attack, defense, or both.
-        """
+    @siege.command()
+    async def strat(self, ctx: commands.Context, type=''):
+        '''Generate a random strat. Must include either "attack" or "defense" as an argument.'''
 
         valid_types = list(self.strat_data.keys())
 
         strat_string = ''
         if(type in valid_types):
-            strat_string += 'Random Strat Generated:\n\n'
+            strat_string += f'Random Strat Generated for {type}:\n\n'
             strat_string += self.getStrat(type)
 
-        elif(type == 'all'):
-            strat_string += 'Random Strats Generated:\n\n'
-            for stratType in valid_types:
-                strat_string += self.getStrat(stratType)
-                strat_string += '\n\n'
-
-            strat_string = strat_string[:-2]
-
         else:
-            err_string = 'Invalid input! List of valid commands:'
-            err_string += '\n- !strat (will display all)'
-            for strat in valid_types:
-                err_string += '\n- !strat ' + strat
-            await ctx.send(err_string)
+            await ctx.send('Please use command with "attack" or "defend"')
             return
 
         # Send strat string if has content

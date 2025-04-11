@@ -13,10 +13,7 @@ from random import randint
 
 ## Module
 class ScrimCommands(bot_module.Module):
-    '''ScrimCommands module
-
-    Adds commands for creating and managing scrim teams.
-    '''
+    '''Adds commands for creating and managing scrim teams.'''
 
     def init_module(self):
         '''
@@ -26,12 +23,10 @@ class ScrimCommands(bot_module.Module):
 
     @commands.command()
     async def scrim(self, ctx: commands.Context):
-        """!scrim command
+        '''Commands for hosting scrimmage (scrim) matches.
 
-        When called, the bot will take a list of all users in the voice channel of the author
-        It will take this list and randomly assign them to two teams, and save and print the teams
-        Warning: Currently each bot instance only works with one Discord server!
-        """
+        !scrim will generate two teams from the members in the user's voice channel.'''
+
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id
@@ -68,13 +63,10 @@ class ScrimCommands(bot_module.Module):
 
             await ctx.send(team1 + team2)
 
-    @commands.command()
+    @scrim.command()
     async def move(self, ctx: commands.Context):
-        """!move command
+        '''Move Team 2 to a different voice channel (must use !scrim first!)'''
 
-        When called, the move command will take the last saved team configuration,
-        and move team 2 to a different channel
-        """
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id
@@ -96,13 +88,9 @@ class ScrimCommands(bot_module.Module):
             else:
                 await ctx.send('ERROR: No saved team configuration. Run !scrim first')
 
-    @commands.command()
+    @scrim.command()
     async def back(self, ctx: commands.Context):
-        """!back command
-
-        When called, the move command will take the last saved team configuration,
-        and move team 2 back to the original channel
-        """
+        '''Move Team 2 back to original voice channel (must use !move first!)'''
         channel = ctx.author.voice.channel
         if(channel != None):
             guild_id = ctx.message.guild.id

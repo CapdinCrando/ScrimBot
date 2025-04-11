@@ -14,10 +14,7 @@ from pyairtable import Table
 
 ## Module
 class QuoteCommands(bot_module.Module):
-    '''QuoteCommands module
-
-    Adds commands for retrieving and adding quotes.
-    '''
+    '''Adds commands for retrieving and adding quotes.'''
 
     # Module fields
     airtable_api_key: str
@@ -35,8 +32,7 @@ class QuoteCommands(bot_module.Module):
         self.table_mutex = threading.Lock()
 
     def get_table_cache(self):
-        '''get_table_cache function
-
+        '''
         Helper function that utilizes a mutex to ensure
         table_cache is not affected by race conditions.
         '''
@@ -53,85 +49,86 @@ class QuoteCommands(bot_module.Module):
         # Return cache
         return table_cache
 
-    @commands.command()
-    async def quote(self, ctx: commands.Context, arg: str = ''):
-        """!quote command
+    @commands.group()
+    async def quote(self, ctx: commands.Context):
+        '''Access the quote api.
 
-        The quote command has several sub commands to access the quote api.
-        """
+        Use !quote to pick a random funny quote!'''
 
-        if arg is '':
+        # Choose and send random quote
+        fields = choice(self.get_table_cache())['fields']
+        quote = fields['Quote']
+        if 'Author' in fields:
+            quote += '\n\t- ' + fields['Author']
+        await ctx.send(quote, tts=True)
 
-            # Choose and send random quote
-            fields = choice(self.get_table_cache())['fields']
-            quote = fields['Quote']
-            if 'Author' in fields:
-                quote += '\n\t- ' + fields['Author']
-            await ctx.send(quote, tts=True)
+    @quote.command()
+    async def add(self, ctx: commands.Context):
+        '''Show link to form to add a new quote'''
 
-        elif arg is 'add':
+        # Send quote form link
+        await ctx.send(self.add_quote_form_link)
 
-            # Send quote form link
-            await ctx.send(self.add_quote_form_link)
+    @quote.command()
+    async def update(self, ctx: commands.Context):
+        '''Update the local quote cache from the remote database'''
 
-        elif arg is 'update':
+        # Lock mutex
+        self.table_mutex.acquire()
 
-            # Update the local quote cache from the remote database
+        # Try finally to prevent error from not freeing the mutex
+        try:
 
-            # Lock mutex
-            self.table_mutex.acquire()
+            # Update quote cache
+            self.table_cache = self.quote_table.all()
+            update_msg = 'Local quote cache updated!'
 
-            # Try finally to prevent error from not freeing the mutex
-            try:
-                # Update quote cache
-                self.table_cache = self.quote_table.all()
+        except:
 
-            finally:
+            # Log error
+            update_msg = 'Local quote cache failed to update!'
 
-                # Unlock mutex
-                self.table_mutex.release()
+        finally:
 
-            # Since quotes cache has been updated, the quotes csv is
-            # now out of date and must be marked dirty
-            self.is_csv_dirty = True
+            # Unlock mutex
+            self.table_mutex.release()
 
-        elif arg is 'all':
+        # Since quotes cache has been updated, the quotes csv is
+        # now out of date and must be marked dirty
+        self.is_csv_dirty = True
 
-            # Get csv with all quotes and upload it
-            # Uses a mutex to prevent file read while writing
-            self.csv_file_mutex.acquire()
+        # Send status update
+        await ctx.send(update_msg)
 
-            # Try finally to prevent error from not freeing the mutex
-            try:
-                quote_csv_filename = 'all_quotes.csv'
+    @quote.command()
+    async def all(self, ctx: commands.Context):
+        '''Get a CSV file with all quotes'''
 
-                # Check if csv has not been updated since last
-                if self.is_csv_dirty:
-                    table_cache = self.get_table_cache()
-                    headers = list(table_cache[0]['fields'].keys())
-                    with open(quote_csv_filename, "w",newline='', encoding='utf-8') as out_file:
-                        writer = csv.DictWriter(out_file, fieldnames=headers)
-                        writer.writeheader()
-                        for quote in table_cache:
-                            writer.writerow(quote['fields'])
+        # Get csv with all quotes and upload it
+        # Uses a mutex to prevent file read while writing
+        self.csv_file_mutex.acquire()
 
-                    # Since quote csv have been updated, no longer dirty
-                    self.is_csv_dirty = False
-                await ctx.send(file=discord.File(quote_csv_filename))
+        # Try finally to prevent error from not freeing the mutex
+        try:
+            quote_csv_filename = 'all_quotes.csv'
 
-            finally:
-                # Unlock mutex
-                self.csv_file_mutex.release()
+            # Check if csv has not been updated since last
+            if self.is_csv_dirty:
+                table_cache = self.get_table_cache()
+                headers = list(table_cache[0]['fields'].keys())
+                with open(quote_csv_filename, "w",newline='', encoding='utf-8') as out_file:
+                    writer = csv.DictWriter(out_file, fieldnames=headers)
+                    writer.writeheader()
+                    for quote in table_cache:
+                        writer.writerow(quote['fields'])
 
-        else:
+                # Since quote csv have been updated, no longer dirty
+                self.is_csv_dirty = False
+            await ctx.send(file=discord.File(quote_csv_filename))
 
-            # Send help message with all quote sub-commands
-            help_msg =  '!quote - Get a random funny quote!\n' + \
-                        '!quote add - Display link to add a new quote\n' + \
-                        '!quote all - Get a CSV file with all quotes!\n' + \
-                        '!quote help - List quote commands\n' + \
-                        '!quote update - Update the local quote cache'
-            await ctx.send(help_msg, tts=True)
+        finally:
+            # Unlock mutex
+            self.csv_file_mutex.release()
 
 async def setup(bot: commands.Bot):
     await QuoteCommands.add_to_bot('quote', bot)

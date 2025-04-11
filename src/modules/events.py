@@ -15,10 +15,7 @@ from datetime import datetime, timedelta
 
 ## Module
 class CustomEvents(bot_module.Module):
-    '''CustomEvents module
-
-    Adds custom event handlers.
-    '''
+    '''Adds custom event handlers.'''
 
     ffmpeg_location: str
 
@@ -26,17 +23,9 @@ class CustomEvents(bot_module.Module):
         self.intro_timestamp_dict = {}
         self.intro_timestamp_mutex = threading.Lock()
 
-    """
-    on_voice_state_update event
-
-    Called when someone joins, leaves, is muted, or is deafened
-    """
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: commands.Context, after: commands.Context):
-
-        '''
-        Plays an intro sound when someone joins a voice channel
-        '''
+        '''Called when someone joins, leaves, is muted, or is deafened'''
 
         # Check for join event
         if before.channel is None and after.channel is not None:

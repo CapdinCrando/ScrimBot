@@ -9,7 +9,9 @@ from discord.ext import commands
 # Third Party
 import os
 import asyncio
+import threading
 from random import choice
+from datetime import datetime, timedelta
 
 ## Module
 class CustomEvents(bot_module.Module):
@@ -19,6 +21,10 @@ class CustomEvents(bot_module.Module):
     '''
 
     ffmpeg_location: str
+
+    def init_module(self):
+        self.intro_timestamp_dict = {}
+        self.intro_timestamp_mutex = threading.Lock()
 
     """
     on_voice_state_update event
@@ -34,6 +40,20 @@ class CustomEvents(bot_module.Module):
 
         # Check for join event
         if before.channel is None and after.channel is not None:
+
+            # Get last time the intro was played
+            self.intro_timestamp_mutex.acquire()
+            old_timestamp = self.intro_timestamp_dict.get(member.id)
+            self.intro_timestamp_mutex.release()
+
+            # Make sure time isn't None
+            if not None:
+
+                # Compare last time the intro was played
+                if(datetime.now() - old_timestamp > timedelta(minutes=5)):
+
+                    # If played in last 5 minutes, return and skip playing intro
+                    return
 
             # Check if intro folder exists
             intro_folder = self.get_resource_path('intros/' + str(member.id))
@@ -54,6 +74,12 @@ class CustomEvents(bot_module.Module):
                     # Play sound and leave when done
                     voice_client.play(discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
                         after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
+
+                    # Log sound played
+                    timestamp = datetime.now()
+                    self.intro_timestamp_mutex.acquire()
+                    self.intro_timestamp_dict[member.id] = timestamp
+                    self.intro_timestamp_mutex.release()
 
 async def setup(bot: commands.Bot):
     await CustomEvents.add_to_bot('events', bot)

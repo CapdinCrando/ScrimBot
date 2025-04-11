@@ -16,23 +16,6 @@ class FunnyCommands(bot_module.Module):
     '''
 
     @commands.command()
-    async def quote(self, ctx: commands.Context):
-        """!quote command
-        The quote command will find a channel called quotes,
-        pull a random message, and send it to the channel with tts
-        """
-        for channel in ctx.guild.text_channels:
-            if('quotes' in channel.name):
-
-                # Get all quotes
-                quotes = [quote.content async for quote in channel.history(limit=None)]
-
-                # If quotes not empty, pick quote
-                if(quotes):
-                    await ctx.send(choice(quotes), tts=True)
-
-
-    @commands.command()
     async def sugg(self, ctx: commands.Context):
         """!sugg command
 
@@ -44,7 +27,7 @@ class FunnyCommands(bot_module.Module):
     async def killmenow(self, ctx: commands.Context):
         """!killmenow command
         Chooses a random member in the author's text channel
-        That member is sent a message telling them to "assasinate" the message author
+        That member is sent a message telling them to "assassinate" the message author
         Disclaimer: 	The message specifies for this to be done in a video game,
                         as we do not condone murder or contract killing
         """

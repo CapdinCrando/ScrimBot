@@ -3,3 +3,4 @@ discord.py
 attrs
 
 # Add module packages here
+pyairtable

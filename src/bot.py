@@ -23,6 +23,12 @@ intents.voice_states = True
 ## Bot Setup
 bot = commands.Bot(command_prefix='!', intents = intents)
 
+# If debug mode enabled, relay errors
+if bot_config.debug_mode:
+    @bot.event
+    async def on_command_error(ctx, error):
+        await ctx.send(f'Error {error}')
+
 ## Add bot modules
 async def load_extensions():
     '''

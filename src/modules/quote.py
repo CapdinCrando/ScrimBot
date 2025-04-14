@@ -10,17 +10,17 @@ from discord.ext import commands
 import csv
 import threading
 from random import choice
-from pyairtable import Table
+from pyairtable import Api
 
 ## Module
 class QuoteCommands(bot_module.Module):
     '''Commands for retrieving and adding quotes.'''
 
     # Set module name
-    __cog_name__ = 'Quote Commands'
+    __cog_name__ = 'QuoteCommands'
 
     # Module fields
-    airtable_api_key: str
+    airtable_api_token: str
     airtable_base_id: str
     airtable_table_name: str
     add_quote_form_link: str
@@ -28,7 +28,8 @@ class QuoteCommands(bot_module.Module):
     def init_module(self):
 
         # Get table and store table cache
-        self.quote_table = Table(self.airtable_api_key, self.airtable_base_id, self.airtable_table_name)
+        self.api = Api(self.airtable_api_token)
+        self.quote_table = self.api.table(self.airtable_base_id, self.airtable_table_name)
         self.table_cache = self.quote_table.all()
         self.is_csv_dirty = True
         self.csv_file_mutex = threading.Lock()
@@ -58,19 +59,27 @@ class QuoteCommands(bot_module.Module):
 
         Use !quote to pick a random funny quote!'''
 
-        # Choose and send random quote
-        fields = choice(self.get_table_cache())['fields']
-        quote = fields['Quote']
-        if 'Author' in fields:
-            quote += '\n\t- ' + fields['Author']
-        await ctx.send(quote, tts=True)
+        # Skip this command when subcommands used
+        if ctx.invoked_subcommand is None:
+
+            # Get quote data
+            fields = choice(self.get_table_cache())['fields']
+            quote = fields['Quote']
+            author = fields['Author']
+            year = fields['Year']
+
+            # Build and send quote
+            full_quote = f'> {quote}'
+            if author:
+                full_quote += f'\n>\t— {author}, *{str(year)}*'
+            await ctx.send(full_quote, tts=True)
 
     @quote.command()
     async def add(self, ctx: commands.Context):
         '''Show link to form to add a new quote'''
 
         # Send quote form link
-        await ctx.send(self.add_quote_form_link)
+        await ctx.send(f'Please send in new quotes with the following form:\n{self.add_quote_form_link}')
 
     @quote.command()
     async def update(self, ctx: commands.Context):

@@ -12,9 +12,6 @@ from random import choice, randint
 class GeneralCommands(bot_module.Module):
     '''Commands for general bot stuff.'''
 
-    # Set module name
-    __cog_name__ = 'General Commands'
-
     # Module fields
     issue_page_link: str
 
@@ -24,12 +21,20 @@ class GeneralCommands(bot_module.Module):
         with open('README.md', 'r') as readme_file:
             self.readme_data = readme_file.read()
 
-    @commands.command
+    @commands.command()
     async def about(self, ctx: commands.Context):
         '''Get general information about ScrimBot'''
         await ctx.send(self.readme_data)
 
-    @commands.command
+    @commands.command()
+    async def list(self, ctx: commands.Context):
+        '''Get a list of all available commands.'''
+        pass
+
+    @commands.command()
     async def issues(self, ctx: commands.Context):
         '''Get the link to report issues or suggestions regarding ScrimBot.'''
-        await ctx.send(self.issue_page_link)
+        await ctx.send(f'Please send all ScrimBot issues and suggestions here:\n{self.issue_page_link}')
+
+async def setup(bot: commands.Bot):
+    await GeneralCommands.add_to_bot('general', bot)

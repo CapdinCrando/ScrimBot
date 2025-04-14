@@ -12,11 +12,12 @@ from random import choice, randint
 class FunnyCommands(bot_module.Module):
     '''Commands that are, put simply, funny.'''
 
-    # Set module name
-    __cog_name__ = 'Funni Commands'
-
     # Module fields
     pog_id: str
+
+    # Class constants
+    invalid_two_person_command_message = \
+        'You and at least one other person must be in a voice channel to use this command!'
 
     @commands.command()
     async def sugg(self, ctx: commands.Context):
@@ -30,10 +31,14 @@ class FunnyCommands(bot_module.Module):
 
         target = ctx.author
         voice = target.voice
-        if(voice != None):
+        if voice is None:
+            await ctx.send(self.invalid_two_person_command_message)
+        else:
             member_list = list(voice.channel.members)
             member_list.remove(target)
-            if(len(member_list) > 0):
+            if len(member_list) == 0:
+                await ctx.send(self.invalid_two_person_command_message)
+            else:
                 hitman = choice(member_list)
                 await hitman.send(f"{ target.name } has requested to be assassinated.\n"
                                     "You have been assigned to this task.\n"
@@ -59,7 +64,9 @@ class FunnyCommands(bot_module.Module):
         '''Picks a random person in the user's voice channel'''
 
         clsVoice = ctx.author.voice
-        if(clsVoice != None):
+        if clsVoice is None:
+            ctx.send(self.invalid_two_person_command_message)
+        else:
             members = clsVoice.channel.members
             choice_member = choice(members)
             await ctx.send(f'<@{choice_member.id}>, I choose you!')

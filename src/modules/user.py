@@ -15,9 +15,6 @@ from random import choice
 class UserCommands(bot_module.Module):
     '''Commands regarding specific users.'''
 
-    # Set module name
-    __cog_name__ = 'User Commands'
-
     # Module fields
     chin_id: int
     wizard_id: int
@@ -27,8 +24,8 @@ class UserCommands(bot_module.Module):
     @commands.command()
     async def chinsignal(self, ctx: commands.Context):
         '''Call the Crimson Chin to action!'''
-        await ctx.send(file=discord.File("chin_signal.PNG"))
-        await ctx.send(f"Calling <@{ self.chin_id }>!")
+        await ctx.send(f"Calling <@{ self.chin_id }>!",
+                       file=discord.File(self.get_resource_path('chin_signal.PNG')))
 
     @commands.command()
     async def noballs(self, ctx: commands.Context):

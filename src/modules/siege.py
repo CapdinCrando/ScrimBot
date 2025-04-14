@@ -20,7 +20,7 @@ class SiegeCommands(bot_module.Module):
     def init_module(self):
 
         # Initialize attack and defense strategy lists
-        with open(self.get_resource_path('strats.json', 'r')) as strat_file:
+        with open(self.get_resource_path('strats.json'), 'r') as strat_file:
             self.strat_data = json.load(strat_file)
 
         random_file_name = self.get_resource_path('operators.json')
@@ -54,7 +54,7 @@ class SiegeCommands(bot_module.Module):
                 operatorIdx = randint(0,attackerCount-1)   # If yes, get new random operator index
             usedOps.append(operatorIdx)   # Add operator to list of used operators
             attackerName = self.attackers[operatorIdx]   # Get name of the operator
-            msg += "\t- " + attackerName + '\n'
+            msg += "* " + attackerName + '\n'
 
         return msg
 
@@ -68,7 +68,7 @@ class SiegeCommands(bot_module.Module):
                 operatorIdx = randint(0,defenderCount-1)   # If yes, get new random operator index
             usedOps.append(operatorIdx)   # Add operator to list of used operators
             defenderName = self.defenders[operatorIdx]   # Get name of the operator
-            msg += "\t- " + defenderName + '\n'
+            msg += "* " + defenderName + '\n'
 
         return msg
 
@@ -78,15 +78,15 @@ class SiegeCommands(bot_module.Module):
         strat = choice(self.strat_data[type])
 
         # Build strat string
-        strat_string = f"**{ type.capitalize() }: { strat['stratName'] }**\n- \"*{ strat['quote'] }*\"\n- { strat['teamName'] }"
+        strat_string = f"**{ type.capitalize() }: { strat['stratName'] }**\n* \"*{ strat['quote'] }*\"\n* { strat['teamName'] }"
         if len(strat) == 4:
             strat_string += ":"
             for member in strat['teamMembers']:
-                strat_string += f"\n\t- { member }"
+                strat_string += f"\n  * { member }"
 
         return strat_string
 
-    @commands.command()
+    @commands.group()
     async def siege(self, ctx: commands.Context):
         '''Game commands for Rainbow Six: Siege'''
         pass

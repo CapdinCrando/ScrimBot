@@ -5,3 +5,5 @@ intros/
 bin/
 env
 envs
+all_quotes.csv
+resources/

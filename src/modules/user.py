@@ -9,22 +9,20 @@ from discord.ext import commands
 # Third Party
 from os import urandom
 from base64 import b64encode
-from random import randint, choice
+from random import choice
 
 ## Module
-class CustomCommands(bot_module.Module):
-    '''Commands which utilize custom ids, such as user and emote ids.'''
+class UserCommands(bot_module.Module):
+    '''Commands regarding specific users.'''
 
     # Set module name
     __cog_name__ = 'User Commands'
 
     # Module fields
     chin_id: int
-    wizard_name: str
-    pog_id: str
+    wizard_id: int
     stinky_id: int
     stinky_lines: list[str]
-
 
     @commands.command()
     async def chinsignal(self, ctx: commands.Context):
@@ -44,17 +42,10 @@ class CustomCommands(bot_module.Module):
         await ctx.send(f"<@{ self.stinky_id }> {stinky_line}")
 
     @commands.command()
-    async def poggers(self, ctx: commands.Context):
-        '''Mimic a large crowd of users spamming the "pog" emoji'''
-        PogAmount = randint(5,8)
-        for i in range(PogAmount):
-            await ctx.send(self.pog_id * randint(1, 10))
-
-    @commands.command()
     async def QjmschLizoardQjmschWizoard(self, ctx: commands.Context):
         '''Generate a new Discord name for the Lizard Wizard.'''
         name = b64encode(urandom(24)).decode('utf-8')
-        await ctx.send(f'{self.wizard_name}\'s new Discord nickname is {str(name)}')
+        await ctx.send(f'<@{self.wizard_id}>\'s new Discord nickname is {str(name)}')
 
 async def setup(bot: commands.Bot):
-    await CustomCommands.add_to_bot('custom', bot)
+    await UserCommands.add_to_bot('user', bot)

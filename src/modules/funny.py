@@ -6,7 +6,7 @@ import bot_module
 from discord.ext import commands
 
 # Third Party
-from random import choice
+from random import choice, randint
 
 ## Module
 class FunnyCommands(bot_module.Module):
@@ -14,6 +14,9 @@ class FunnyCommands(bot_module.Module):
 
     # Set module name
     __cog_name__ = 'Funni Commands'
+
+    # Module fields
+    pog_id: str
 
     @commands.command()
     async def sugg(self, ctx: commands.Context):
@@ -43,6 +46,13 @@ class FunnyCommands(bot_module.Module):
 
         fugg_member = choice(ctx.guild.members)
         await ctx.send(f'Fugg you, <@{fugg_member.id}>')
+
+    @commands.command()
+    async def poggers(self, ctx: commands.Context):
+        '''Mimic a large crowd of users spamming the "pog" emoji'''
+        PogAmount = randint(5,8)
+        for i in range(PogAmount):
+            await ctx.send(self.pog_id * randint(1, 10))
 
     @commands.command()
     async def pick(self, ctx: commands.Context):

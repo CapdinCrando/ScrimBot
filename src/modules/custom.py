@@ -49,7 +49,7 @@ class CustomCommands(bot_module.Module):
 
     @commands.command()
     async def QjmschLizoardQjmschWizoard(self, ctx: commands.Context):
-        '''Print a random string of (cryptographically strong) characters'''
+        '''Generate a new Discord name for the Lizard Wizard.'''
         name = b64encode(urandom(24)).decode('utf-8')
         await ctx.send(f'{self.wizard_name}\'s new Discord nickname is {str(name)}')
 

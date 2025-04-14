@@ -12,7 +12,10 @@ from random import randint, choice
 
 ## Module
 class SiegeCommands(bot_module.Module):
-    '''Adds commands for Rainbow Six: Siege.'''
+    '''Commands for Rainbow Six: Siege.'''
+
+    # Set module name
+    __cog_name__ = 'Siege Commands'
 
     def init_module(self):
 

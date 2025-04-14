@@ -10,7 +10,10 @@ from random import choice
 
 ## Module
 class FunnyCommands(bot_module.Module):
-    '''Adds commands that are, put simply, funny.'''
+    '''Commands that are, put simply, funny.'''
+
+    # Set module name
+    __cog_name__ = 'Funni Commands'
 
     @commands.command()
     async def sugg(self, ctx: commands.Context):

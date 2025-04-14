@@ -15,8 +15,9 @@ from datetime import datetime, timedelta
 
 ## Module
 class CustomEvents(bot_module.Module):
-    '''Adds custom event handlers.'''
+    '''Custom event handlers.'''
 
+    # Module fields
     ffmpeg_location: str
 
     def init_module(self):

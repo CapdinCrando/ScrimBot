@@ -13,7 +13,10 @@ from random import randint, choice
 
 ## Module
 class CustomCommands(bot_module.Module):
-    '''Adds commands which utilize custom ids, such as user and emote ids.'''
+    '''Commands which utilize custom ids, such as user and emote ids.'''
+
+    # Set module name
+    __cog_name__ = 'User Commands'
 
     # Module fields
     chin_id: int

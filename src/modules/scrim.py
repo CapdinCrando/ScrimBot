@@ -13,7 +13,10 @@ from random import randint
 
 ## Module
 class ScrimCommands(bot_module.Module):
-    '''Adds commands for creating and managing scrim teams.'''
+    '''Commands for creating and managing scrim teams.'''
+
+    # Set module name
+    __cog_name__ = 'Scrim Commands'
 
     def init_module(self):
         '''

@@ -14,7 +14,10 @@ from pyairtable import Table
 
 ## Module
 class QuoteCommands(bot_module.Module):
-    '''Adds commands for retrieving and adding quotes.'''
+    '''Commands for retrieving and adding quotes.'''
+
+    # Set module name
+    __cog_name__ = 'Quote Commands'
 
     # Module fields
     airtable_api_key: str

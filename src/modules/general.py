@@ -27,11 +27,6 @@ class GeneralCommands(bot_module.Module):
         await ctx.send(self.readme_data)
 
     @commands.command()
-    async def list(self, ctx: commands.Context):
-        '''Get a list of all available commands.'''
-        pass
-
-    @commands.command()
     async def issues(self, ctx: commands.Context):
         '''Get the link to report issues or suggestions regarding ScrimBot.'''
         await ctx.send(f'Please send all ScrimBot issues and suggestions here:\n{self.issue_page_link}')

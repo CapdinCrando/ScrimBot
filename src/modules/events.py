@@ -48,7 +48,6 @@ class CustomEvents(bot_module.Module):
             # Check if intro folder exists
             intro_folder = self.get_resource_path('intros/' + str(member.id))
             if(os.path.isdir(intro_folder)):
-                print(intro_folder)
 
                 # Folder exists, get all available files
                 sound_files = [f for f in os.listdir(intro_folder) if f.endswith('.mp3') and os.path.isfile(intro_folder + '/' + f) ]
@@ -59,26 +58,14 @@ class CustomEvents(bot_module.Module):
                     # Pick random file
                     intro_file_name = intro_folder + '/' + choice(sound_files)
 
-                    print(intro_file_name)
-
                     # Connect to voice
-                    voice_client = await after.channel.connect()
-
-                    # Register callback routine
-                    def after_playing(error):
-                        coro = voice_client.disconnect()
-                        fut = asyncio.run_coroutine_threadsafe(coro, asyncio.get_event_loop())
-                        try:
-                            fut.result()
-                        except Exception as e:
-                            print(f"Error disconnecting: {e}")
+                    voice_client: discord.VoiceProtocol = await after.channel.connect()
 
                     # Play sound and leave when done
                     voice_client.play(
                         discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
-                        after=after_playing
-                    )
-                    
+                        after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
+
                     # Log sound played
                     timestamp = datetime.now()
                     self.intro_timestamp_mutex.acquire()

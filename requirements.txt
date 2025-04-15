@@ -1,5 +1,6 @@
 # Core ScrimBot Packages
 discord.py
+discord.py[voice]
 attrs
 
 # Add module packages here

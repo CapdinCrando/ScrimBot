@@ -1,3 +1,9 @@
-constants.py
+config.json
 __pycache__
 /.vs/
+intros/
+bin/
+env
+envs
+all_quotes.csv
+resources/

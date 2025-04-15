@@ -25,7 +25,7 @@ class CustomEvents(bot_module.Module):
         self.intro_timestamp_mutex = threading.Lock()
 
     @commands.Cog.listener()
-    async def on_voice_state_update(self, member: discord.Member, before: commands.Context, after: commands.Context):
+    async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
         '''Called when someone joins, leaves, is muted, or is deafened'''
 
         # Check for join event
@@ -37,10 +37,10 @@ class CustomEvents(bot_module.Module):
             self.intro_timestamp_mutex.release()
 
             # Make sure time isn't None
-            if not None:
+            if old_timestamp is not None:
 
                 # Compare last time the intro was played
-                if(datetime.now() - old_timestamp > timedelta(minutes=5)):
+                if(datetime.now() - old_timestamp) < timedelta(minutes=5):
 
                     # If played in last 5 minutes, return and skip playing intro
                     return
@@ -48,6 +48,7 @@ class CustomEvents(bot_module.Module):
             # Check if intro folder exists
             intro_folder = self.get_resource_path('intros/' + str(member.id))
             if(os.path.isdir(intro_folder)):
+                print(intro_folder)
 
                 # Folder exists, get all available files
                 sound_files = [f for f in os.listdir(intro_folder) if f.endswith('.mp3') and os.path.isfile(intro_folder + '/' + f) ]
@@ -58,13 +59,26 @@ class CustomEvents(bot_module.Module):
                     # Pick random file
                     intro_file_name = intro_folder + '/' + choice(sound_files)
 
+                    print(intro_file_name)
+
                     # Connect to voice
                     voice_client = await after.channel.connect()
 
-                    # Play sound and leave when done
-                    voice_client.play(discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
-                        after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
+                    # Register callback routine
+                    def after_playing(error):
+                        coro = voice_client.disconnect()
+                        fut = asyncio.run_coroutine_threadsafe(coro, asyncio.get_event_loop())
+                        try:
+                            fut.result()
+                        except Exception as e:
+                            print(f"Error disconnecting: {e}")
 
+                    # Play sound and leave when done
+                    voice_client.play(
+                        discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
+                        after=after_playing
+                    )
+                    
                     # Log sound played
                     timestamp = datetime.now()
                     self.intro_timestamp_mutex.acquire()

@@ -92,8 +92,9 @@ class SiegeCommands(bot_module.Module):
         pass
 
     @siege.command()
-    async def random(self, ctx: commands.Context, type: str ='both'):
-        '''Generate 5 random attackers or defenders. Include "attack" or "defend" to only generate for one side.'''
+    async def random(self, ctx: commands.Context, type: str = commands.parameter(
+        default = 'both', description = 'Which side to generate for ("attack", "defend", or "both")', displayed_name = 'Side')):
+        '''Generate 5 random attackers or defenders.'''
 
         pick_string = ''
         if(type == 'attack'):
@@ -116,8 +117,9 @@ class SiegeCommands(bot_module.Module):
             await ctx.send(pick_string)
 
     @siege.command()
-    async def strat(self, ctx: commands.Context, type=''):
-        '''Generate a random strat. Must include either "attack" or "defense" as an argument.'''
+    async def strat(self, ctx: commands.Context, type: str = commands.parameter(
+        default = 'both', description = 'Which side to generate for ("attack", "defend", or "both")', displayed_name = 'Side')):
+        '''Generate a random strat.'''
 
         valid_types = list(self.strat_data.keys())
 

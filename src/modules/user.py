@@ -38,7 +38,7 @@ class UserCommands(bot_module.Module):
         stinky_line = choice(self.stinky_lines)
         await ctx.send(f"<@{ self.stinky_id }> {stinky_line}")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def QjmschLizoardQjmschWizoard(self, ctx: commands.Context):
         '''Generate a new Discord name for the Lizard Wizard.'''
         name = b64encode(urandom(24)).decode('utf-8')

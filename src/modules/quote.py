@@ -9,7 +9,8 @@ from discord.ext import commands
 # Third Party
 import csv
 import threading
-from random import choice
+import asyncio
+from random import choice, randint, sample
 from pyairtable import Api
 
 ## Module
@@ -24,6 +25,9 @@ class QuoteCommands(bot_module.Module):
     airtable_base_id: str
     airtable_table_name: str
     add_quote_form_link: str
+
+    who_said_emojis: list[str]
+    who_said_game_time_seconds: int
 
     def init_module(self):
 
@@ -141,6 +145,65 @@ class QuoteCommands(bot_module.Module):
         finally:
             # Unlock mutex
             self.csv_file_mutex.release()
+
+    @quote.command
+    async def who(self, ctx: commands.Context):
+        '''Play the \"Who Said It?" Game!'''
+
+        # Get random quotes
+        random_quotes = sample(self.get_table_cache(), len(self.who_said_emojis))
+
+        # Zip with emojis
+        quotes_with_emojis = list(zip(random_quotes, self.who_said_emojis))
+
+        # Pick random quote
+        chosen_quote, chosen_emoji = choice(quotes_with_emojis)
+        quote_message = chosen_quote['fields']['Quote']
+        quote_author = ['fields']['Author']
+        
+        # Build game message
+        quote_message += \
+            '\n\nWho said the above quote? React to this message with the following emojis:'
+        for quote, emoji in quotes_with_emojis.items():
+
+            # Get author string
+            author: str = quote['fields']['Author']
+
+            # Handle case of no author
+            if len(author) == 0: author = 'ScrimBot' 
+
+            # Build string
+            quote_message += f'\n* {emoji} — {author}'
+
+        # Send game message
+        sent_message = await ctx.send(quote_message)
+
+        # Wait for players to play
+        self.bot.wait_for()
+        asyncio.sleep(self.who_said_game_time_seconds)
+
+        # Get winners
+        winner_list = []
+        for reaction in sent_message.reactions:
+            if str(reaction.emoji) == chosen_emoji:
+
+                winner_list = [user async for user in reaction.users()]
+                break
+
+        # Build winner message
+        winner_message = 'Time\'s up! The correct answer is:' + \
+                        f'\n\n* {chosen_emoji} — {quote_author}\n\n' + \
+                        'Winners:'
+        
+        if len(winner_list) == 0: 
+            winner_list.append(' Nobody! You all suck!')
+
+        for winner in winner_list:
+            winner_message += f'\n* {winner}'
+
+        # Send winner list
+        await ctx.send(winner_message)
+
 
 async def setup(bot: commands.Bot):
     await QuoteCommands.add_to_bot('quote', bot)

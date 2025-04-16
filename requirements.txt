@@ -5,3 +5,4 @@ attrs
 
 # Add module packages here
 pyairtable
+mcstatus

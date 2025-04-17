@@ -12,7 +12,7 @@ from random import choice, randint
 class FunnyCommands(bot_module.Module):
     '''Commands that are, put simply, funny.'''
 
-    # Module fields
+    # Module settings
     pog_id: str
 
     # Class constants

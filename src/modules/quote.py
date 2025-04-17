@@ -19,7 +19,7 @@ class QuoteCommands(bot_module.Module):
     # Set module name
     __cog_name__ = 'QuoteCommands'
 
-    # Module fields
+    # Module settings
     airtable_api_token: str
     airtable_base_id: str
     airtable_table_name: str

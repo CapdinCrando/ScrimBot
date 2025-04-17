@@ -15,7 +15,7 @@ from random import choice
 class UserCommands(bot_module.Module):
     '''Commands regarding specific users.'''
 
-    # Module fields
+    # Module settings
     chin_id: int
     wizard_id: int
     stinky_id: int

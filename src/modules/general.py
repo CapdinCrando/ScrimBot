@@ -12,7 +12,7 @@ from random import choice, randint
 class GeneralCommands(bot_module.Module):
     '''Commands for general bot stuff.'''
 
-    # Module fields
+    # Module settings
     issue_page_link: str
 
     def init_module(self):

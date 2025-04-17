@@ -72,9 +72,11 @@ class MinecraftCommands(bot_module.Module):
         # Create message list
         self.mc_status_server_info = StatusMessageList(
             status_data_raw, self.mc_status_refresh_s, self.mc_status_timeout_s, MinecraftServerInfo)
-
+        
     @StatusCommands.status.command()
-    async def minecraft(self, ctx: commands.Context, server_name: str, ip_address: str):
+    async def minecraft(self, ctx: commands.Context, 
+                        server_name: str = commands.parameter(displayed_name='Server Name', description='Localized server name'),
+                        ip_address: str = commands.parameter(displayed_name='Server IP', description='IP Address of the Server (ex. 127.0.0.1:25565)')):
         '''Create a message to display the status of a Minecraft server.'''
 
         # Create initial message

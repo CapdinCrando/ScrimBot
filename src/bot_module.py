@@ -6,6 +6,7 @@ from bot_config import bot_config
 from discord.ext import commands
 
 # Third Party
+import os
 import attrs
 
 @attrs.define()
@@ -15,7 +16,7 @@ class Module(commands.Cog):
     Used as a base for custom bot modules.
     '''
 
-    # General module fields
+    # Common Module fields
     module_name: str
     bot: commands.Bot
     _extra_fields: dict
@@ -52,6 +53,11 @@ class Module(commands.Cog):
         Used to get the appropriate resource path for the given module resource.
         '''
         return f'resources/{self.module_name}/{resource_name}'
+    
+    def get_cache_file_path(self, file_name: str):
+        cache_folder_path = f'cache/{self.module_name}'
+        os.makedirs(cache_folder_path, exist_ok=True)
+        return f'{cache_folder_path}/{file_name}'
 
     @classmethod
     def add_to_bot(cls, module_name: str, bot: commands.Bot):

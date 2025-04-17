@@ -122,7 +122,7 @@ class QuoteCommands(bot_module.Module):
 
         # Try finally to prevent error from not freeing the mutex
         try:
-            quote_csv_filename = 'all_quotes.csv'
+            quote_csv_filename = self.get_cache_file_path('all_quotes.csv')
 
             # Check if csv has not been updated since last
             if self.is_csv_dirty:

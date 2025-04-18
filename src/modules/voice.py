@@ -19,6 +19,7 @@ class VoiceCommands(bot_module.Module):
 
     # Module fields
     ffmpeg_location: str
+    react_file_ext: str
 
     def init_module(self):
         self.intro_timestamp_dict = {}
@@ -30,7 +31,7 @@ class VoiceCommands(bot_module.Module):
 
             # Folder exists, get all available files
             self.react_file_names = \
-                [f'{react_folder}/{f}' for f in os.listdir(react_folder) if f.endswith('.mp3') and os.path.isfile(react_folder + '/' + f) ]
+                [f'{react_folder}/{f}' for f in os.listdir(react_folder) if f.endswith(self.react_file_ext) and os.path.isfile(react_folder + '/' + f) ]
 
     @commands.command()
     async def react(self, ctx: commands.Context):

@@ -14,9 +14,6 @@ from random import randint, choice
 class SiegeCommands(bot_module.Module):
     '''Commands for Rainbow Six: Siege.'''
 
-    # Set module name
-    __cog_name__ = 'Siege Commands'
-
     def init_module(self):
 
         # Initialize attack and defense strategy lists

@@ -146,7 +146,7 @@ class QuoteCommands(bot_module.Module):
             # Unlock mutex
             self.csv_file_mutex.release()
 
-    @quote.command
+    @quote.command()
     async def who(self, ctx: commands.Context):
         '''Play the \"Who Said It?" Game!'''
 
@@ -158,13 +158,13 @@ class QuoteCommands(bot_module.Module):
 
         # Pick random quote
         chosen_quote, chosen_emoji = choice(quotes_with_emojis)
-        quote_message = chosen_quote['fields']['Quote']
-        quote_author = ['fields']['Author']
-        
+        quote_quote_message = chosen_quote['fields']['Quote']
+        quote_author = chosen_quote['fields']['Author']
+
         # Build game message
-        quote_message += \
-            '\n\nWho said the above quote? React to this message with the following emojis:'
-        for quote, emoji in quotes_with_emojis.items():
+        quote_message = f'> {quote_quote_message}\n' + \
+            'Who said the above quote? React to this message with the following emojis:'
+        for quote, emoji in quotes_with_emojis:
 
             # Get author string
             author: str = quote['fields']['Author']
@@ -175,31 +175,37 @@ class QuoteCommands(bot_module.Module):
             # Build string
             quote_message += f'\n* {emoji} — {author}'
 
+        quote_message += f'\nYou have {self.who_said_game_time_seconds} seconds! Go!'
+
         # Send game message
-        sent_message = await ctx.send(quote_message)
+        sent_message = await ctx.send(quote_message, )
+
+        # Add reactions to message
+        for emoji in self.who_said_emojis:
+            await sent_message.add_reaction(emoji)
 
         # Wait for players to play
-        self.bot.wait_for()
-        asyncio.sleep(self.who_said_game_time_seconds)
+        await asyncio.sleep(self.who_said_game_time_seconds)
 
         # Get winners
         winner_list = []
-        for reaction in sent_message.reactions:
+        fetched_message = await sent_message.fetch()
+        for reaction in fetched_message.reactions:
             if str(reaction.emoji) == chosen_emoji:
 
-                winner_list = [user async for user in reaction.users()]
+                winner_list = [user async for user in reaction.users() if user != self.bot.user]
                 break
 
         # Build winner message
         winner_message = 'Time\'s up! The correct answer is:' + \
-                        f'\n\n* {chosen_emoji} — {quote_author}\n\n' + \
+                        f'\n{chosen_emoji} — {quote_author}\n\n' + \
                         'Winners:'
         
         if len(winner_list) == 0: 
-            winner_list.append(' Nobody! You all suck!')
-
-        for winner in winner_list:
-            winner_message += f'\n* {winner}'
+            winner_message += ' Nobody! You all suck!'
+        else:
+            for winner in winner_list:
+                winner_message += f'\n* <@{winner.id}>'
 
         # Send winner list
         await ctx.send(winner_message)

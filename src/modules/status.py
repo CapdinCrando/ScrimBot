@@ -10,7 +10,7 @@ from discord.ext import commands, tasks
 import attrs
 import threading
 
-@attrs.define()
+@attrs.define(eq=False, hash=False)
 class StatusMessageInfo():
     '''Class for storing information regarding status messages.'''
 
@@ -28,7 +28,7 @@ class StatusMessageInfo():
         '''Override eq to allow to be used as dict key.'''
 
         if isinstance(other, StatusMessageInfo):
-            return self.guild_id
+            return self.guild_id == other.guild_id
         return False
     
     async def get_status_content(self) -> discord.Embed:
@@ -79,7 +79,7 @@ class StatusMessageList():
         with self._lock:
             for _, info in self._dict.items():
                 if isinstance(info, self._status_info_class):
-                    self._update_message(info)
+                    await self._update_message(info)
         
     def __init__(self, status_dict: dict, refresh: int, timeout: int, status_info_type: type = StatusMessageInfo):
         '''List initialization.'''
@@ -98,11 +98,21 @@ class StatusMessageList():
                 if isinstance(info, dict):
                     message_info: StatusMessageInfo = self._make_new_status_info(info)
                     message_info.status_timeout_seconds = timeout
-                    self._dict[message_info] = message_info
+                    self._dict[message_info.guild_id] = message_info
             
         # Start status thread
         self._update_status_messages.change_interval(seconds=refresh)
         self._update_status_messages.start()
+
+    def get_dict(self):
+        '''Called to retrive the internal dict and elements as dicts.'''
+
+        # Lock
+        formatted_dict = self._dict
+        with self._lock:
+            for key, value in formatted_dict.items():
+                formatted_dict[key] = attrs.asdict(value) # TODO: Add filter here
+            return formatted_dict
 
     async def _update_message(self, message_info: StatusMessageInfo):
         '''Called to update a message within the internal dict.
@@ -112,7 +122,7 @@ class StatusMessageList():
         try:
             await message_info.update_message(status_message)
         except discord.errors.NotFound:
-            del self._dict[message_info]
+            del self._dict[message_info.guild_id]
 
     async def add_status_message(self, message_info: StatusMessageInfo):
         '''Add a new status message to the list.'''
@@ -120,23 +130,28 @@ class StatusMessageList():
         with self._lock:
 
             # Check if already in dict
-            if message_info in self._dict:
+            if message_info.guild_id in self._dict:
 
                 # If in dict, get and delete old message
-                old_message: StatusMessageInfo = self._dict[message_info]
+                old_message: StatusMessageInfo = self._dict[message_info.guild_id]
                 await old_message.delete_message()
 
             # Add message info
-            self._dict[message_info] = message_info
+            self._dict[message_info.guild_id] = message_info
 
-            # Do initial message  update
-            await self._update_message(message_info)
+            try:
+                # Do initial message update
+                await self._update_message(message_info)
+
+            except:
+                print('Error')
+                return
         
 ## Module
 class StatusCommands(bot_module.Module):
     '''Commands for reporting the statuses of game servers.'''
 
-    @commands.command()
+    @commands.group()
     @commands.has_permissions(administrator=True)
     async def status(self, ctx: commands.Context):
         '''Create a message to display the status of a game server.'''

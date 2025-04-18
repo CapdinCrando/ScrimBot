@@ -7,3 +7,4 @@ env
 envs
 all_quotes.csv
 resources/
+cache/

@@ -17,9 +17,6 @@ from pyairtable import Api
 class QuoteCommands(bot_module.Module):
     '''Commands for retrieving and adding quotes.'''
 
-    # Set module name
-    __cog_name__ = 'QuoteCommands'
-
     # Module fields
     airtable_api_token: str
     airtable_base_id: str

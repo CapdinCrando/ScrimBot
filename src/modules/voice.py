@@ -14,15 +14,54 @@ from random import choice
 from datetime import datetime, timedelta
 
 ## Module
-class CustomEvents(bot_module.Module):
-    '''Custom event handlers.'''
+class VoiceCommands(bot_module.Module):
+    '''Commands that utilize the voice channel.'''
 
     # Module fields
     ffmpeg_location: str
+    react_file_ext: str
 
     def init_module(self):
         self.intro_timestamp_dict = {}
         self.intro_timestamp_mutex = threading.Lock()
+
+        # Get reactions
+        react_folder = self.get_resource_path('reactions')
+        if(os.path.isdir(react_folder)):
+
+            # Folder exists, get all available files
+            self.react_file_names = \
+                [f'{react_folder}/{f}' for f in os.listdir(react_folder) if f.endswith(self.react_file_ext) and os.path.isfile(react_folder + '/' + f) ]
+
+    @commands.command()
+    async def react(self, ctx: commands.Context):
+        '''Get a genuine reaction from ScrimBot'''
+        
+        # Verify voice channel
+        channel = ctx.author.voice.channel
+        if channel is None:
+
+            ctx.send('Must be in a voice channel to use this command!')
+
+        else:
+
+            # Check to make sure good files exist
+            if(len(self.react_file_names) != 0):
+
+                # Choose file
+                chosen_react_file = choice(self.react_file_names)
+
+                # Connect to voice
+                voice_client: discord.VoiceProtocol = await channel.connect()
+
+                # Prevent overriding current voice
+                if voice_client.is_playing():
+                    return
+
+                # Play sound and leave when done
+                voice_client.play(
+                    discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=chosen_react_file),
+                    after=lambda error: asyncio.run_coroutine_threadsafe(voice_client.disconnect(), self.bot.loop))
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
@@ -61,6 +100,10 @@ class CustomEvents(bot_module.Module):
                     # Connect to voice
                     voice_client: discord.VoiceProtocol = await after.channel.connect()
 
+                    # Prevent overriding current voice
+                    if voice_client.is_playing():
+                        return
+
                     # Play sound and leave when done
                     voice_client.play(
                         discord.FFmpegPCMAudio(executable=self.ffmpeg_location, source=intro_file_name),
@@ -73,4 +116,4 @@ class CustomEvents(bot_module.Module):
                     self.intro_timestamp_mutex.release()
 
 async def setup(bot: commands.Bot):
-    await CustomEvents.add_to_bot('events', bot)
+    await VoiceCommands.add_to_bot('voice', bot)

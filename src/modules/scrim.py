@@ -15,9 +15,6 @@ from random import randint
 class ScrimCommands(bot_module.Module):
     '''Commands for creating and managing scrim teams.'''
 
-    # Set module name
-    __cog_name__ = 'Scrim Commands'
-
     # Class constants
     invalid_two_person_command_message = 'You and at least one other person must be in a voice channel to use this command!'
 

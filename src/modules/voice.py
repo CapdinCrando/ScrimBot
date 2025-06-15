@@ -67,6 +67,10 @@ class VoiceCommands(bot_module.Module):
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
         '''Called when someone joins, leaves, is muted, or is deafened'''
 
+        # Ignore voice state for the bot itself
+        if member.bot:
+            return
+
         # Check for join event
         if before.channel is None and after.channel is not None:
 

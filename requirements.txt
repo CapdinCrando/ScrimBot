@@ -1,6 +1,6 @@
 # Core ScrimBot Packages
-discord.py
-discord.py[voice]
+discord.py @ git+https://github.com/Rapptz/discord.py@master
+discord.py[voice] @ git+https://github.com/Rapptz/discord.py@master
 attrs
 
 # Add module packages here

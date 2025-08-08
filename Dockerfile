@@ -5,7 +5,7 @@ WORKDIR /app
 ADD . .
 
 RUN apt-get -y update
-RUN apt-get install -y ffmpeg
+RUN apt-get install -y ffmpeg git
 
 RUN python -m venv /app/env
 RUN /app/env/bin/pip install -r requirements.txt

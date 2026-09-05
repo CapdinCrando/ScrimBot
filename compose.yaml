@@ -6,4 +6,5 @@ services:
     build:
       context: .
     volumes:
-      - ${DATA_DIR}:/app
+      - ${DATA_DIR}/config:/app/config
+      - ${DATA_DIR}/resources:/app/resources

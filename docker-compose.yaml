@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  scrim-bot:
-    build: .
-    container_name: scrim-bot
-    restart: unless-stopped
-    volumes:
-      - /srv/scrim-bot/config:/app/config

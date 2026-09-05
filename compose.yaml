@@ -1,0 +1,9 @@
+services:
+  scrimbot:
+    image: scrimbot:latest
+    container_name: scrimbot
+    restart: unless-stopped
+    build:
+      context: .
+    volumes:
+      - ${DATA_DIR}:/app
